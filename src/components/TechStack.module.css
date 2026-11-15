@@ -1,0 +1,89 @@
+.section {
+  padding-block: var(--section-y);
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 0 clamp(2rem, 4vw, 3.5rem);
+}
+
+.group {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 1rem 1.25rem;
+  padding-block: clamp(1.75rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--line);
+}
+
+.index {
+  color: var(--accent);
+}
+
+.title {
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.chips {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--text);
+  transition:
+    border-color var(--dur-fast),
+    color var(--dur-fast),
+    background-color var(--dur-fast);
+}
+li.chip:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* a confirmar: borde punteado y tono apagado */
+.chip[data-state='unconfirmed'] {
+  border-style: dashed;
+  color: var(--muted);
+}
+/* en desarrollo: punto de acento delante */
+.chip[data-state='in-development']::before {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin-top: 2rem;
+  color: var(--muted);
+}
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.legend .chip {
+  width: 1.75rem;
+  height: 1rem;
+  padding: 0;
+  justify-content: center;
+}

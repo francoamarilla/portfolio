@@ -1,0 +1,137 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding-top: var(--header-h);
+  overflow: hidden;
+}
+
+/* Fondo a sangre completa: la superficie pasa por detrás de la tipografía.
+   Sin máscaras: el desvanecimiento hacia los bordes lo hace el shader (ver field.ts). */
+.network {
+  inset: 0;
+  z-index: -1;
+}
+
+/* Velo detrás del bloque de texto: mantiene el contraste del párrafo y los links sin apagar la escena */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 52% 58% at 14% 82%,
+    color-mix(in srgb, var(--bg) 86%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 55%, transparent) 45%,
+    transparent 78%
+  );
+}
+
+.inner {
+  align-self: end;
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  justify-items: start;
+  padding-bottom: clamp(2.5rem, 7vh, 5.5rem);
+}
+
+.role {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  color: var(--accent);
+}
+.role::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.name {
+  /* limitado por alto para que el Hero entre en pantallas bajas */
+  font-size: min(var(--fs-display), 14svh);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  max-width: 11ch;
+}
+
+.intro {
+  max-width: 34rem;
+  font-size: var(--fs-lead);
+  color: var(--muted);
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.bar {
+  --line-scale: 1;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 1.25rem;
+  color: var(--muted);
+}
+/* la línea se dibuja de izquierda a derecha en la entrada (GSAP anima --line-scale) */
+.bar::before {
+  content: '';
+  position: absolute;
+  inset: 0 var(--gutter) auto;
+  height: 1px;
+  background: var(--line-strong);
+  transform: scaleX(var(--line-scale));
+  transform-origin: left;
+}
+
+.cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+}
+.cueLine {
+  position: relative;
+  width: 3rem;
+  height: 1px;
+  background: var(--line-strong);
+  overflow: hidden;
+}
+.cueLine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cueLine::after {
+    animation: cue 2.4s var(--ease-out) infinite;
+  }
+}
+@keyframes cue {
+  0% { transform: scaleX(0); transform-origin: left; }
+  45% { transform: scaleX(1); transform-origin: left; }
+  55% { transform: scaleX(1); transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+
+@media (max-width: 767px) {
+  .hero::after {
+    background: linear-gradient(0deg, color-mix(in srgb, var(--bg) 88%, transparent) 30%, transparent 75%);
+  }
+  .bar p {
+    display: none;
+  }
+}

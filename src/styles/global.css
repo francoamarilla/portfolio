@@ -1,0 +1,217 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+section[id] {
+  scroll-margin-top: var(--header-h);
+}
+
+/* ---------- utilidades ---------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: var(--radius-s);
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
+}
+
+/* Botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65em;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition:
+    background-color var(--dur-fast),
+    border-color var(--dur-fast),
+    color var(--dur-fast);
+}
+.btn:hover {
+  border-color: var(--text);
+}
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.btn--primary:hover {
+  background: var(--text);
+  border-color: var(--text);
+}
+.btn__arrow {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.btn:hover .btn__arrow {
+  transform: translateX(0.25em);
+}
+
+/* Contenido pendiente */
+.pending {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6em;
+  flex-wrap: wrap;
+  padding: 0.35em 0.7em;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-s);
+  color: var(--muted);
+}
+div.pending {
+  display: flex;
+}
+.pending__tag {
+  color: var(--accent);
+  font-size: 0.6875rem;
+}
+
+/* Links sociales */
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-size: var(--fs-small);
+}
+.social__link {
+  color: var(--text);
+  border-bottom: 1px solid var(--line-strong);
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+.social__link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.social__pending {
+  color: var(--muted);
+}
+.social__pending .mono {
+  font-size: 0.6875rem;
+}
+
+/* Títulos con SplitText (mask: 'lines'): la máscara recorta en el alto de línea,
+   que en titulares es < 1 y cortaría descendentes (j, p, g). Se amplía sin mover el layout.
+   Apunta solo a la máscara: los spans temporales de palabras no deben volverse bloque. */
+.split-line-mask {
+  display: block;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#11161b" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- title y description los define cada ruta (React 19 los ubica en <head>) desde src/content.
+         No duplicarlos acá: el navegador tomaría este y las rutas no podrían cambiarlo. -->
+
+    <!-- Vista previa al compartir (redes, mensajería). Estos lectores no ejecutan JS,
+         por eso va en el HTML. Mantener en sintonía con ui.meta en src/content/es/ui.ts. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:title" content="Full Stack Developer — Portfolio" />
+    <meta
+      property="og:description"
+      content="Portfolio de Full Stack Developer: aplicaciones web y sistemas de gestión con Java, Spring Boot, Angular, TypeScript y PostgreSQL."
+    />
+    <meta name="twitter:card" content="summary" />
+    <!-- TODO (ver CONTENT_TODO.md): og:image y og:url requieren el dominio definitivo -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
