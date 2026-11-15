@@ -1,0 +1,8 @@
+.section {
+  padding-block: var(--section-y);
+}
+
+.list {
+  display: grid;
+  gap: clamp(5rem, 11vw, 10rem);
+}

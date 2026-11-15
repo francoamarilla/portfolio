@@ -1,0 +1,105 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  background: linear-gradient(180deg, rgb(17 22 27 / 0.85), rgb(17 22 27 / 0));
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.hidden {
+  transform: translateY(-100%);
+}
+/* con foco de teclado adentro, el header tiene que verse aunque se haya ocultado al scrollear */
+.header:focus-within {
+  transform: none;
+}
+
+.bar {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.desktop ul {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 2.25rem);
+}
+
+.link {
+  position: relative;
+  font-size: var(--fs-small);
+  color: var(--muted);
+  padding-block: 0.4rem;
+  transition: color var(--dur-fast);
+}
+.link:hover,
+.link[aria-current] {
+  color: var(--text);
+}
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.link[aria-current]::after {
+  transform: scaleX(1);
+}
+
+.menuBtn {
+  display: none;
+  min-height: 2.75rem;
+  padding-inline: 0.5rem;
+  color: var(--text);
+}
+
+.menu {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 1rem var(--gutter);
+  border: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+.menu::backdrop {
+  background: var(--bg);
+}
+.menu .menuBtn {
+  display: block;
+  margin-left: auto;
+}
+.menu ul {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 3rem;
+}
+.menu .link {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  color: var(--text);
+}
+
+@media (max-width: 767px) {
+  .desktop {
+    display: none;
+  }
+  .menuBtn {
+    display: block;
+  }
+}

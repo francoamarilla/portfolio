@@ -1,0 +1,28 @@
+.footer {
+  border-top: 1px solid var(--line);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem 2rem;
+  padding-block: 1.5rem;
+  color: var(--muted);
+}
+
+.top {
+  min-height: 2.75rem;
+  color: var(--muted);
+  transition: color var(--dur-fast);
+}
+.top:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 599px) {
+  .role {
+    display: none;
+  }
+}
