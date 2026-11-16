@@ -48,13 +48,13 @@ Antes de publicar, `showPlaceholders = false` en `src/config.ts` oculta todos lo
 2. Agregarlo en `src/data/projects.ts`. La posición en el array es el orden en pantalla.
 3. Agregar sus textos en `src/content/es/projects.ts`. TypeScript avisa si falta.
 
-La composición de la lista se arma sola con un patrón que se repite (ancho → captura a la izquierda → captura a la derecha). `featured: true` fuerza el formato ancho. La página `/projects/<slug>` se genera automáticamente.
+Jerarquía: los proyectos con `featured: true` (hoy Causario y Turnos) se muestran arriba en formato ancho; el resto va en una grilla compacta de tres columnas bajo "Otros proyectos". Conviene listar primero los destacados, porque la numeración sigue el orden del array. La página `/projects/<slug>` se genera automáticamente.
 
 ### Capturas
 
 Guardarlas en `public/projects/<slug>/` y referenciarlas como `coverImage: '/projects/<slug>/cover.webp'`, o en `gallery` para la galería del detalle. El marco reserva el alto con una proporción fija, así que reemplazar una captura no mueve el layout. Si una ruta está mal, se muestra el placeholder en lugar de un hueco vacío.
 
-Formato recomendado: WebP. Portada de al menos 2000 px de ancho, en 21:9 o 16:10, que son las proporciones de la lista.
+Formato recomendado: WebP. Portada de al menos 2000 px de ancho: 21:9 para los destacados y 16:10 para la grilla compacta.
 
 ### Agregar un idioma
 

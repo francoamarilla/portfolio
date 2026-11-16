@@ -6,8 +6,8 @@ import type { ProjectData } from '../types/content'
  * No completar campos sin datos reales: lo omitido se muestra como pendiente.
  */
 export const projects: ProjectData[] = [
-  { slug: 'causario', name: 'Causario' },
-  { slug: 'turnos', name: 'Turnos', status: 'in-development' },
+  { slug: 'causario', name: 'Causario', featured: true },
+  { slug: 'turnos', name: 'Turnos', status: 'in-development', featured: true },
   { slug: 'stock-api', name: 'Stock API' },
   { slug: 'sticky', name: 'Sticky' },
   { slug: 'farmacia', name: 'Farmacia', team: true },

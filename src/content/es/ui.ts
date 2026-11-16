@@ -47,6 +47,7 @@ export const ui: UiCopy = {
     intro: 'Aplicaciones web y sistemas de gestión. Cada ficha reúne el problema, la solución y las decisiones técnicas del proyecto.',
     note: 'Nota',
     counter: 'de',
+    more: 'Otros proyectos',
     viewProject: 'Ver proyecto',
     screenshotPending: 'Captura pendiente',
     summaryPending: 'Descripción pendiente de completar.',

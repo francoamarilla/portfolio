@@ -8,7 +8,7 @@ import { ProjectMedia } from './ProjectMedia'
 import { ProjectBadges, ProjectTags } from './ProjectMeta'
 import styles from './ProjectCard.module.css'
 
-export type CardLayout = 'wide' | 'media-left' | 'media-right'
+export type CardLayout = 'wide' | 'compact'
 
 const { projects: ui } = content.ui
 
@@ -33,7 +33,7 @@ export function ProjectCard({ project, index, layout }: Props) {
         label={project.name}
         src={project.coverImage}
         ratio={layout === 'wide' ? '21 / 9' : '16 / 10'}
-        parallax
+        parallax={layout === 'wide'}
       />
 
       <div className={styles.body}>
