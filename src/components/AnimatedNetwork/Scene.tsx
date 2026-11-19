@@ -53,6 +53,13 @@ const vertexShader = /* glsl */ `
     vSoft = smoothstep(6.0, 2.5, dist);                               // desenfoque de los puntos cercanos
     vAlpha = reveal * fade * (0.55 + 0.45 * aSeed) * uFade;
     gl_PointSize = (1.3 + aSeed * 1.7) * (1.0 + vSoft * 1.6) * uDpr * (${REF_DIST.toFixed(1)} / dist);
+
+    // invisible (fuera del fade o antes del reveal): no rasterizar. Los puntos cercanos a la cámara
+    // son los más grandes y casi todos tienen alpha 0; dibujarlos igual era el grueso del costo de GPU.
+    if (vAlpha < 0.004) {
+      gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+      gl_PointSize = 0.0;
+    }
   }`
 
 const fragmentShader = /* glsl */ `
@@ -92,7 +99,7 @@ function buildField() {
 function Field() {
   const { gl, camera } = useThree()
   const pointer = useRef({ x: 0, y: 0, tx: 0, ty: 0, moved: false })
-  const clock = useRef({ t: 0, energy: 0 })
+  const clock = useRef({ t: 0, energy: 0, scroll: 0 })
 
   const { geometry, material, uniforms, ray } = useMemo(() => {
     const css = getComputedStyle(document.documentElement)
@@ -160,7 +167,10 @@ function Field() {
     p.y += (p.ty - p.y) * ease
     c.energy += (Math.min(lag * 2, 1) - c.energy) * (1 - Math.exp(-delta * 1.5))
 
-    const scroll = Math.min(window.scrollY / window.innerHeight, 1)
+    // la rueda del mouse scrollea a saltos: suavizarlo evita que cámara y fade avancen escalonados
+    const targetScroll = Math.min(window.scrollY / window.innerHeight, 1)
+    c.scroll += (targetScroll - c.scroll) * (1 - Math.exp(-delta * 8))
+    const scroll = c.scroll
     const intro = 1 - Math.pow(1 - Math.min(c.t / INTRO_SECONDS, 1), 3)
 
     camera.position.set(
@@ -196,7 +206,7 @@ function Field() {
 export default function Scene({ active, onReady }: { active: boolean; onReady: () => void }) {
   return (
     <Canvas
-      dpr={[1, 1.75]}
+      dpr={[1, 1.5]} // los puntos son difusos: por encima de 1.5 no se nota y el costo crece al cuadrado
       camera={{ position: [...CAMERA.position], fov: CAMERA.fov, near: 0.1, far: 60 }}
       gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
       frameloop={active ? 'always' : 'never'}

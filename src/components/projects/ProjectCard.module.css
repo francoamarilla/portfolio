@@ -2,6 +2,7 @@
   position: relative;
   display: grid;
   gap: 1.75rem;
+  align-content: start; /* en la grilla compacta la fila estira la tarjeta: que no lo absorba la captura */
 }
 
 /* foco del link extendido: se marca la tarjeta entera */
@@ -79,21 +80,15 @@
   transform: translateX(0.4em);
 }
 
-/* ---------- layouts (desktop) ---------- */
-@media (min-width: 900px) {
-  .card[data-layout='media-left'],
-  .card[data-layout='media-right'] {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: clamp(2rem, 4vw, 4.5rem);
-    align-items: end;
-  }
-  .card[data-layout='media-right'] {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  }
-  .card[data-layout='media-right'] .media {
-    order: 2;
-  }
+/* ---------- layouts ---------- */
+.card[data-layout='compact'] {
+  gap: 1.25rem;
+}
+.card[data-layout='compact'] .body {
+  gap: 1rem;
+}
 
+@media (min-width: 900px) {
   .card[data-layout='wide'] .body {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 2rem clamp(2rem, 4vw, 4.5rem);

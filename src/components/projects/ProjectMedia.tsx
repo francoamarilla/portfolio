@@ -43,7 +43,7 @@ export function ProjectMedia({ label, src, alt = '', ratio = '16 / 10', parallax
             {
               yPercent: 5,
               ease: 'none',
-              scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+              scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
             },
           )
         })

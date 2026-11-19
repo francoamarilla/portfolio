@@ -80,6 +80,7 @@ export interface UiCopy {
     intro: string
     note: string
     counter: string
+    more: string
     viewProject: string
     screenshotPending: string
     summaryPending: string
