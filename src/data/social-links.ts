@@ -1,9 +1,9 @@
 import type { SocialLink } from '../types/content'
 
-/** Completar url cuando existan. Sin url válida se muestran como "pendiente", nunca como link roto. */
+/** Sin url válida no se renderiza: nunca un link roto. */
 export const socialLinks: SocialLink[] = [
-  { id: 'github' },
-  { id: 'linkedin' },
-  { id: 'email' }, // formato: 'mailto:nombre@dominio.com'
-  { id: 'cv' }, // p. ej. '/cv.pdf' dentro de /public
+  { id: 'email', url: 'mailto:franco24amarilla@gmail.com' },
+  { id: 'linkedin', url: 'https://www.linkedin.com/in/franco-maximiliano-amarilla/' },
+  { id: 'github', url: 'https://github.com/francoamarilla' },
+  { id: 'cv', url: `${import.meta.env.BASE_URL}FrancoAmarilla-CV.pdf` },
 ]

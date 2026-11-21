@@ -3,9 +3,8 @@ import { content } from '../../content'
 import { Reveal } from '../../motion/Reveal'
 import { SplitReveal } from '../../motion/SplitReveal'
 import type { ProjectData } from '../../types/content'
-import { Pending } from '../Pending'
 import { ProjectMedia } from './ProjectMedia'
-import { ProjectBadges, ProjectTags } from './ProjectMeta'
+import { ProjectTags } from './ProjectMeta'
 import styles from './ProjectCard.module.css'
 
 export type CardLayout = 'wide' | 'compact'
@@ -27,14 +26,18 @@ export function ProjectCard({ project, index, layout }: Props) {
   const number = String(index + 1).padStart(2, '0')
 
   return (
-    <article className={`${styles.card} project-hover`} data-layout={layout}>
-      <ProjectMedia
-        className={styles.media}
-        label={project.name}
-        src={project.coverImage}
-        ratio={layout === 'wide' ? '21 / 9' : '16 / 10'}
-        parallax={layout === 'wide'}
-      />
+    <article className={styles.card} data-layout={layout}>
+      {/* por encima del link extendido del título: así el hover del marco es solo del marco.
+          Duplica el destino del título, por eso queda fuera del teclado y de lectores de pantalla */}
+      <Link to={`/projects/${project.slug}`} className={styles.mediaLink} tabIndex={-1} aria-hidden="true">
+        <ProjectMedia
+          label={project.name}
+          logo={project.logo}
+          brand={project.brand}
+          ratio={layout === 'wide' ? '21 / 9' : '16 / 10'}
+          parallax={layout === 'wide'}
+        />
+      </Link>
 
       <div className={styles.body}>
         <div className={styles.head}>
@@ -44,18 +47,21 @@ export function ProjectCard({ project, index, layout }: Props) {
           {/* el split va dentro del link: así el área clickeable extendida (::after) depende de la tarjeta */}
           <h3 className={styles.title}>
             <Link to={`/projects/${project.slug}`} className={styles.link}>
-              <SplitReveal as="span">{project.name}</SplitReveal>
+              <SplitReveal as="span" className={styles.label}>
+                {project.name}
+              </SplitReveal>
             </Link>
           </h3>
         </div>
 
         <Reveal className={styles.details}>
-          <ProjectBadges project={project} text={text} />
-          {text.summary ? <p className={styles.summary}>{text.summary}</p> : <Pending>{ui.summaryPending}</Pending>}
+          <p className={`mono ${styles.subtitle}`}>{text.subtitle}</p>
+          <p className={styles.summary}>{text.summary}</p>
           <ProjectTags technologies={project.technologies} />
-          <span className={`mono ${styles.cta}`} aria-hidden="true">
+          {/* encima del área extendida, para que la flecha responda solo a este texto; mismo destino que el título */}
+          <Link to={`/projects/${project.slug}`} className={`mono ${styles.cta}`} tabIndex={-1} aria-hidden="true">
             {ui.viewProject} <span className={styles.arrow}>→</span>
-          </span>
+          </Link>
         </Reveal>
       </div>
     </article>

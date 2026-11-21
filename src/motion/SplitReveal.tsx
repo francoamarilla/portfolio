@@ -46,7 +46,11 @@ export function SplitReveal({ as: Tag = 'h2', className, id, children, delay = 0
         })
       })
       gsap.matchMedia().add(MOTION_OK, () => {
-        ScrollTrigger.create({ trigger: ref.current, start: 'top bottom+=30%', once: true, onEnter: split })
+        ScrollTrigger.create({ trigger: ref.current, start: 'top bottom+=30%', once: true,
+          // diferido: si el título ya está a la vista, onEnter corre dentro de este mismo contexto
+          // y contextSafe lo anidaría en sí mismo (recursión infinita en dev con StrictMode)
+          onEnter: () => requestAnimationFrame(split),
+        })
       })
     },
     { scope: ref },

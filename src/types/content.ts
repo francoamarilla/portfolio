@@ -2,20 +2,21 @@ import type { SectionId } from '../config'
 
 /* ---------- Datos no traducibles (src/data) ---------- */
 
-export type ProjectSlug = 'causario' | 'turnos' | 'stock-api' | 'sticky' | 'farmacia'
-export type ProjectStatus = 'in-development' | 'completed'
+export type ProjectSlug = 'causario' | 'recepta' | 'acopio' | 'sticky'
 
 export interface ProjectData {
   slug: ProjectSlug
   name: string
-  status?: ProjectStatus
-  team?: boolean
-  /** Fuerza el layout ancho en la lista; si se omite, se usa el patrón cíclico. */
+  /** layout ancho en la lista; el resto va en la grilla compacta */
   featured?: boolean
-  technologies?: string[]
-  /** Ruta dentro de /public, p. ej. '/projects/turnos/cover.webp' */
+  technologies: string[]
+  /** logo para fondo oscuro: imagen de la tarjeta en la lista */
+  logo: string
+  /** colores de marca [oscuro, claro]: fondo y halo de la tarjeta */
+  brand: [string, string]
+  /** con asset(): lleva el prefijo del base del sitio */
   coverImage?: string
-  gallery?: { src: string; alt?: string }[]
+  gallery?: string[]
   repositoryUrl?: string
   demoUrl?: string
 }
@@ -23,68 +24,61 @@ export interface ProjectData {
 export type SocialId = 'email' | 'github' | 'linkedin' | 'cv'
 export interface SocialLink {
   id: SocialId
-  /** https://… o mailto:… — vacío = pendiente (no se renderiza como link) */
+  /** https://…, mailto:… o ruta local — sin url no se renderiza */
   url?: string
 }
 
 export interface ProfileData {
-  name?: string
-  role: 'Full Stack Developer'
+  name: string
+  role: string
   /** Tecnologías mostradas en la franja inferior del Hero */
   heroStack: string[]
 }
 
-export type TechGroupId = 'backend' | 'frontend' | 'databases' | 'testing' | 'ai' | 'tools'
-/** unconfirmed: falta validar que sea parte del perfil actual · in-development: planificado, no disponible */
-export type TechState = 'unconfirmed' | 'in-development'
+export type TechGroupId = 'languages' | 'ai' | 'backend' | 'frontend' | 'databases' | 'testing' | 'tools'
 export interface TechGroup {
   id: TechGroupId
-  items: { name: string; state?: TechState }[]
+  /** icon: clave en src/components/tech-icons.ts; sin icon se muestra solo el texto */
+  items: { name: string; icon?: string }[]
 }
 
 /* ---------- Contenido traducible (src/content/<lang>) ---------- */
 
 export interface ProjectCopy {
-  summary?: string
-  note?: string
-  problem?: string
-  solution?: string
-  features?: string[]
-  /** Funcionalidades planificadas, se muestran marcadas como "En desarrollo" */
-  upcoming?: string[]
-  /** etiqueta específica para lo planificado; por defecto ui.status.upcoming */
-  upcomingLabel?: string
-  architecture?: string
-  challenges?: string
-  learnings?: string
+  subtitle: string
+  summary: string
+  problem: string
+  solution: string
+  features: string[]
+  highlights: string[]
+  /** alt de cada imagen de la galería, en el mismo orden que ProjectData.gallery */
+  galleryAlt?: string[]
+  /** Validación (Causario) o evaluación (Recepta) */
+  results?: { title: string; items: string[]; note?: string }
 }
 
-export type ProjectDetailKey =
-  | 'problem'
-  | 'solution'
-  | 'features'
-  | 'architecture'
-  | 'challenges'
-  | 'learnings'
+export type ProjectDetailKey = 'problem' | 'solution' | 'features' | 'highlights'
+
+export interface EducationCopy {
+  title: string
+  institution: string
+  period: string
+  description?: string
+}
+
+export type Lang = 'es' | 'en'
 
 export interface UiCopy {
   meta: { title: string; description: string }
-  nav: Record<SectionId, string> & { skip: string; menu: string; close: string; label: string }
-  hero: { ctaProjects: string; ctaContact: string; scroll: string }
-  social: Record<SocialId, string> & { pending: string }
-  placeholders: { name: string; brand: string; intro: string; tag: string }
-  status: Record<ProjectStatus, string> & { team: string; upcoming: string }
+  nav: Record<SectionId, string> & { skip: string; menu: string; close: string; label: string; lang: string }
+  hero: { ctaProjects: string; ctaCv: string; scroll: string }
+  social: Record<SocialId, string>
   projects: {
-    eyebrow: string
     title: string
     intro: string
-    note: string
     counter: string
     more: string
     viewProject: string
-    screenshotPending: string
-    summaryPending: string
-    techPending: string
     back: string
     prev: string
     next: string
@@ -92,48 +86,29 @@ export interface UiCopy {
     demo: string
     stack: string
     gallery: string
-    galleryPending: string
-    sectionPending: string
+    zoom: string
     sections: Record<ProjectDetailKey, string>
   }
-  about: {
-    title: string
-    statementPending: string
-    bodyPending: string
-    focusLabel: string
-    educationLabel: string
-    educationPending: string
-  }
-  stack: {
-    title: string
-    intro: string
-    groups: Record<TechGroupId, string>
-    states: Record<TechState, string>
-  }
-  contact: {
-    title: string
-    body: string
-    emailLabel: string
-    emailPending: string
-    elsewhere: string
-  }
+  about: { title: string }
+  stack: { title: string; groups: Record<TechGroupId, string> }
+  education: { title: string }
+  contact: { title: string; body: string; location: string; locationLabel: string }
   footer: { top: string }
   notFound: { title: string; body: string; cta: string }
 }
 
 export interface AboutCopy {
   /** frase principal, en tipografía grande */
-  statement?: string
+  statement: string
   /** párrafos de presentación */
-  body?: string[]
-  focus: { title: string; text?: string }[]
-  education: { institution: string; detail?: string }
+  body: string[]
 }
 
 export interface Content {
-  lang: string
+  lang: Lang
   ui: UiCopy
-  profile: { intro?: string }
+  profile: { intro: string }
   about: AboutCopy
+  education: EducationCopy[]
   projects: Record<ProjectSlug, ProjectCopy>
 }

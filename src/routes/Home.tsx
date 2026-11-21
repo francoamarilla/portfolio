@@ -1,5 +1,6 @@
 import { About } from '../components/About'
 import { Contact } from '../components/Contact'
+import { Education } from '../components/Education'
 import { Hero } from '../components/Hero'
 import { ProjectsSection } from '../components/projects/ProjectsSection'
 import { TechStack } from '../components/TechStack'
@@ -13,9 +14,10 @@ export function Home() {
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
       <Hero />
-      <ProjectsSection />
       <About />
+      <ProjectsSection />
       <TechStack />
+      <Education />
       <Contact />
     </>
   )

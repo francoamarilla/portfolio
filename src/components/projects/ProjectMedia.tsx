@@ -1,5 +1,4 @@
 import { useRef, useState, type CSSProperties } from 'react'
-import { content } from '../../content'
 import { gsap, MOTION_OK, useGSAP } from '../../motion/gsap'
 import styles from './ProjectMedia.module.css'
 
@@ -8,8 +7,13 @@ interface Props {
   label: string
   src?: string
   alt?: string
-  /** relación de aspecto CSS; reserva el espacio aunque la imagen no exista o tarde en cargar */
+  /** relación de aspecto CSS; reserva el espacio aunque la imagen no exista o tarde en cargar.
+   *  'natural': el marco toma la proporción de la captura y la muestra completa, sin recortes */
   ratio?: string
+  /** logo del proyecto: se muestra centrado sobre el fondo de marca en lugar de la captura */
+  logo?: string
+  /** colores de marca [oscuro, claro] para el fondo del logo */
+  brand?: [string, string]
   /** desplazamiento leve con el scroll (solo desktop) */
   parallax?: boolean
   className?: string
@@ -19,7 +23,7 @@ interface Props {
  * Marco de captura. Sin imagen muestra un placeholder identificado, nunca una captura falsa.
  * Reemplazar la captura no cambia el layout: el alto lo define `ratio`.
  */
-export function ProjectMedia({ label, src, alt = '', ratio = '16 / 10', parallax = false, className = '' }: Props) {
+export function ProjectMedia({ label, src, logo, brand, alt = '', ratio = '16 / 10', parallax = false, className = '' }: Props) {
   const root = useRef<HTMLElement>(null)
   const viewport = useRef<HTMLDivElement>(null)
   const inner = useRef<HTMLDivElement>(null)
@@ -53,7 +57,11 @@ export function ProjectMedia({ label, src, alt = '', ratio = '16 / 10', parallax
   )
 
   return (
-    <figure ref={root} className={`${styles.frame} ${className}`} style={{ '--ratio': ratio } as CSSProperties}>
+    <figure
+      ref={root}
+      className={`${styles.frame} ${ratio === 'natural' ? styles.natural : ''} ${className}`}
+      style={ratio === 'natural' ? undefined : ({ '--ratio': ratio } as CSSProperties)}
+    >
       <div className={styles.bar} aria-hidden="true">
         <span className={styles.dots}>
           <i />
@@ -64,7 +72,18 @@ export function ProjectMedia({ label, src, alt = '', ratio = '16 / 10', parallax
       </div>
       <div ref={viewport} className={styles.viewport}>
         <div ref={inner} className={styles.inner}>
-          {src && !failed ? (
+          {logo ? (
+            <div
+              className={`${styles.media} ${styles.brand}`}
+              style={brand && ({ '--b1': brand[0], '--b2': brand[1] } as CSSProperties)}
+            >
+              <span className={styles.halo} aria-hidden="true" />
+              <span className={styles.float}>
+                {/* decorativo: el nombre ya está en el título de la tarjeta */}
+                <img className={styles.logo} src={logo} alt="" decoding="async" />
+              </span>
+            </div>
+          ) : src && !failed ? (
             <img
               className={styles.media}
               src={src}
@@ -78,7 +97,6 @@ export function ProjectMedia({ label, src, alt = '', ratio = '16 / 10', parallax
               <span className={styles.ghost} aria-hidden="true">
                 {label}
               </span>
-              <span className={`mono ${styles.pending}`}>{content.ui.projects.screenshotPending}</span>
             </div>
           )}
         </div>

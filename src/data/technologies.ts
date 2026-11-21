@@ -1,28 +1,53 @@
 import type { TechGroup } from '../types/content'
 
-/**
- * Stack por área. Agregar solo tecnologías confirmadas.
- * state: 'unconfirmed' = a validar · 'in-development' = planificado, todavía no disponible.
- */
+/** Stack por área. Solo tecnologías confirmadas, sin niveles ni porcentajes. */
 export const technologies: TechGroup[] = [
-  { id: 'backend', items: [{ name: 'Java' }, { name: 'Spring Boot' }, { name: 'APIs REST' }] },
-  { id: 'frontend', items: [{ name: 'Angular' }, { name: 'TypeScript' }] },
-  { id: 'databases', items: [{ name: 'PostgreSQL' }] },
   {
-    id: 'testing',
+    id: 'languages',
     items: [
-      { name: 'JUnit', state: 'unconfirmed' },
-      { name: 'Mockito', state: 'unconfirmed' },
-      { name: 'JaCoCo', state: 'unconfirmed' },
+      { name: 'Java', icon: 'openjdk' },
+      { name: 'TypeScript', icon: 'typescript' },
+      { name: 'JavaScript', icon: 'javascript' },
+      { name: 'Python', icon: 'python' },
+      { name: 'SQL' },
+    ],
+  },
+  { id: 'ai', items: [{ name: 'LLM Integration' }, { name: 'Tool Calling' }, { name: 'LLM Evaluation' }] },
+  {
+    id: 'backend',
+    items: [
+      { name: 'Spring Boot', icon: 'springboot' },
+      { name: 'Spring Security', icon: 'springsecurity' },
+      { name: 'Spring Data JPA', icon: 'spring' },
+      { name: 'FastAPI', icon: 'fastapi' },
+      { name: 'REST API' },
     ],
   },
   {
-    id: 'ai',
-    // integración prevista en Turnos; todavía no terminada
+    id: 'frontend',
     items: [
-      { name: 'Chatbot WhatsApp', state: 'in-development' },
-      { name: 'RAG', state: 'in-development' },
+      { name: 'Angular', icon: 'angular' },
+      { name: 'React', icon: 'react' },
+      { name: 'HTML', icon: 'html5' },
+      { name: 'CSS / SCSS', icon: 'sass' },
     ],
   },
-  { id: 'tools', items: [{ name: 'Git' }, { name: 'GitHub' }] },
+  {
+    id: 'databases',
+    items: [
+      { name: 'PostgreSQL', icon: 'postgresql' },
+      { name: 'Flyway', icon: 'flyway' },
+    ],
+  },
+  { id: 'testing', items: [{ name: 'JUnit 5', icon: 'junit5' }, { name: 'Mockito' }] },
+  {
+    id: 'tools',
+    items: [
+      { name: 'Git', icon: 'git' },
+      { name: 'Docker', icon: 'docker' },
+      { name: 'Docker Compose', icon: 'docker' },
+      { name: 'GitHub Actions', icon: 'githubactions' },
+      { name: 'Linux', icon: 'linux' },
+    ],
+  },
 ]

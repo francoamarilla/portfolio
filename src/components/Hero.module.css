@@ -62,9 +62,14 @@
 }
 
 .intro {
-  max-width: 34rem;
   font-size: var(--fs-lead);
   color: var(--muted);
+}
+/* una sola línea donde entra; en pantallas angostas vuelve a cortar para no desbordar */
+@media (min-width: 1100px) {
+  .intro {
+    white-space: nowrap;
+  }
 }
 
 .ctas {

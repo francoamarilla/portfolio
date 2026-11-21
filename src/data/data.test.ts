@@ -1,27 +1,27 @@
 import { describe, expect, it } from 'vitest'
-import { content } from '../content'
+import { languages } from '../content'
+import { techIcons } from '../components/tech-icons'
 import { isValidHref } from '../lib/url'
 import { projects } from './projects'
 import { socialLinks } from './social-links'
 import { technologies } from './technologies'
 
 /*
- * Integridad del contenido. Protege las reglas del brief al editar datos:
- * nada inventado, nada roto, nada marcado como terminado si no lo está.
+ * Integridad del contenido: nada inventado, nada roto y los dos idiomas a la par.
  */
+const { es, en } = languages
+
+/** Estructura de un objeto (claves y largo de los arrays), sin los textos. */
+const shape = (v: unknown): unknown =>
+  Array.isArray(v) ? v.map(shape) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, shape(x)])) : typeof v
+
 describe('proyectos', () => {
-  it('son los cinco del brief, con los nombres exactos y en orden', () => {
-    expect(projects.map((p) => p.name)).toEqual(['Causario', 'Turnos', 'Stock API', 'Sticky', 'Farmacia'])
+  it('son los cuatro aprobados, con los nombres exactos y en orden', () => {
+    expect(projects.map((p) => p.name)).toEqual(['Causario', 'Recepta', 'Acopio', 'Sticky Fingers'])
   })
 
-  it('tienen slugs únicos y aptos para URL', () => {
-    const slugs = projects.map((p) => p.slug)
-    expect(new Set(slugs).size).toBe(slugs.length)
-    for (const s of slugs) expect(s).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
-  })
-
-  it('cada proyecto tiene textos en el idioma activo', () => {
-    for (const p of projects) expect(content.projects[p.slug]).toBeDefined()
+  it('Causario y Recepta van destacados', () => {
+    expect(projects.filter((p) => p.featured).map((p) => p.slug)).toEqual(['causario', 'recepta'])
   })
 
   it('repositorio y demo son URLs válidas o están vacíos', () => {
@@ -30,18 +30,32 @@ describe('proyectos', () => {
     }
   })
 
-  it('Turnos no figura como terminado y su integración de IA sigue marcada como pendiente', () => {
-    const turnos = projects.find((p) => p.slug === 'turnos')!
-    expect(turnos.status).not.toBe('completed')
-    const text = content.projects.turnos
-    // el chatbot nunca puede aparecer entre las funcionalidades disponibles
-    expect((text.features ?? []).join(' ')).not.toMatch(/chatbot|whatsapp|rag|ia\b/i)
+  it('Causario no muestra código: el repositorio es privado', () => {
+    expect(projects.find((p) => p.slug === 'causario')!.repositoryUrl).toBeUndefined()
   })
 
-  it('Causario y Sticky no tienen funcionalidades inventadas', () => {
-    for (const slug of ['causario', 'sticky'] as const) {
-      expect(content.projects[slug].features ?? []).toHaveLength(0)
+  it('Recepta no afirma una integración con WhatsApp', () => {
+    for (const lang of [es, en]) expect(JSON.stringify(lang.projects.recepta)).not.toMatch(/whatsapp/i)
+  })
+
+  it('las imágenes apuntan a /public con el base del sitio', () => {
+    for (const p of projects) {
+      for (const src of [p.coverImage, ...(p.gallery ?? [])]) {
+        if (src !== undefined) expect(src.startsWith(import.meta.env.BASE_URL), src).toBe(true)
+      }
     }
+  })
+
+  it('cada imagen de galería tiene su alt en los dos idiomas', () => {
+    for (const p of projects) {
+      for (const lang of [es, en]) expect(lang.projects[p.slug].galleryAlt?.length ?? 0, `${lang.lang}/${p.slug}`).toBe(p.gallery?.length ?? 0)
+    }
+  })
+})
+
+describe('idiomas', () => {
+  it('español e inglés tienen la misma estructura', () => {
+    expect(shape(en)).toEqual(shape(es))
   })
 })
 
@@ -57,8 +71,7 @@ describe('links', () => {
 })
 
 describe('tech stack', () => {
-  it('la IA aplicada sigue marcada como en desarrollo mientras no exista', () => {
-    const ai = technologies.find((g) => g.id === 'ai')!
-    for (const item of ai.items) expect(item.state).toBe('in-development')
+  it('cada logo referenciado existe', () => {
+    for (const g of technologies) for (const i of g.items) if (i.icon) expect(techIcons[i.icon], i.icon).toBeDefined()
   })
 })

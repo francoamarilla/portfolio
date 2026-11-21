@@ -27,6 +27,25 @@
   letter-spacing: -0.02em;
 }
 
+.desktop {
+  margin-left: auto;
+}
+
+/* selector de idioma: muestra el idioma al que se cambia */
+.lang {
+  min-height: 2.75rem;
+  padding-inline: 0.5rem;
+  color: var(--muted);
+  transition: color var(--dur-fast);
+}
+.lang:hover {
+  color: var(--accent);
+}
+.menu .lang {
+  margin-top: 2.5rem;
+  font-size: var(--fs-small);
+}
+
 .desktop ul {
   display: flex;
   gap: clamp(1rem, 2.5vw, 2.25rem);
@@ -98,6 +117,9 @@
 @media (max-width: 767px) {
   .desktop {
     display: none;
+  }
+  .bar .lang {
+    margin-left: auto;
   }
   .menuBtn {
     display: block;

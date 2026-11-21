@@ -1,4 +1,3 @@
-import { showPlaceholders } from '../config'
 import { content } from '../content'
 import { socialLinks } from '../data/social-links'
 import { isValidHref } from '../lib/url'
@@ -17,13 +16,7 @@ export function SocialLinks({ only, className = '' }: { only?: SocialId[]; class
               {social[id]} <span aria-hidden="true">↗</span>
             </a>
           </li>
-        ) : (
-          showPlaceholders && (
-            <li key={id} className="social__pending">
-              {social[id]} <span className="mono">— {social.pending}</span>
-            </li>
-          )
-        ),
+        ) : null,
       )}
     </ul>
   )

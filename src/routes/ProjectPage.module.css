@@ -43,13 +43,14 @@
   color: var(--muted);
 }
 
+.subtitle {
+  color: var(--accent);
+}
+
 .note {
+  margin-top: 1.25rem;
   color: var(--muted);
   font-size: var(--fs-small);
-}
-.note .mono {
-  color: var(--accent);
-  margin-right: 0.5em;
 }
 
 .links {
@@ -105,17 +106,18 @@
   height: 1px;
   background: var(--accent);
 }
-.upcoming {
-  color: var(--muted);
+
+.zoom {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border-radius: var(--radius-m);
+  text-align: inherit;
+  cursor: zoom-in;
 }
-.features .upcoming::before {
-  background: var(--muted);
-}
-.upcomingTag {
-  padding: 0.2rem 0.55rem;
-  border: 1px dashed var(--line-strong);
-  border-radius: 999px;
-  font-size: 0.625rem;
+.zoom:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
 .gallery {

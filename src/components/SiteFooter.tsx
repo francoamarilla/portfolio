@@ -11,7 +11,7 @@ export function SiteFooter() {
     <footer className={styles.footer}>
       <div className={`container ${styles.bar}`}>
         <p className="mono">
-          © {YEAR} {profile.name ?? ui.placeholders.brand}
+          © {YEAR} {profile.name}
         </p>
         <p className={`mono ${styles.role}`}>{profile.role}</p>
         {/* scroll suave vía CSS (scroll-behavior), respeta prefers-reduced-motion */}

@@ -12,6 +12,12 @@
   border-radius: var(--radius-m);
 }
 
+.mediaLink {
+  position: relative;
+  z-index: 2;
+  display: block;
+}
+
 .body {
   display: grid;
   gap: 1.5rem;
@@ -49,7 +55,12 @@
   inset: 0;
   z-index: 1;
 }
-.card:hover .link {
+/* el texto queda por encima del área clickeable extendida: el subrayado responde solo al título */
+.label {
+  position: relative;
+  z-index: 2;
+}
+.link:has(.label:hover) {
   background-size: 100% 1px;
 }
 
@@ -59,12 +70,18 @@
   justify-items: start;
 }
 
+.subtitle {
+  color: var(--accent);
+}
+
 .summary {
   max-width: 34rem;
   color: var(--muted);
 }
 
 .cta {
+  position: relative;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: 0.6em;
@@ -76,7 +93,7 @@
   color: var(--accent);
   transition: transform var(--dur-base) var(--ease-out);
 }
-.card:hover .arrow {
+.cta:hover .arrow {
   transform: translateX(0.4em);
 }
 

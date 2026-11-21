@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { sectionIds, type SectionId } from '../config'
-import { content } from '../content'
+import { content, setLang } from '../content'
 import { profile } from '../data/profile'
 import styles from './SiteHeader.module.css'
 
-const { nav, placeholders } = content.ui
+const { nav } = content.ui
+const other = content.lang === 'es' ? 'en' : 'es'
 
 export function SiteHeader() {
   const [hidden, setHidden] = useState(false)
@@ -64,11 +65,14 @@ export function SiteHeader() {
       </a>
       <div className={`container ${styles.bar}`}>
         <Link to={{ pathname: '/', hash: 'home' }} className={styles.brand}>
-          {profile.name ?? placeholders.brand}
+          {profile.name}
         </Link>
         <nav aria-label={nav.label} className={styles.desktop}>
           <ul>{links()}</ul>
         </nav>
+        <button className={`mono ${styles.lang}`} onClick={() => setLang(other)} lang={other} aria-label={nav.lang}>
+          {other.toUpperCase()}
+        </button>
         <button className={`mono ${styles.menuBtn}`} onClick={openMenu} aria-haspopup="dialog">
           {nav.menu}
         </button>
@@ -82,6 +86,9 @@ export function SiteHeader() {
         <nav aria-label={nav.label}>
           <ul>{links(true)}</ul>
         </nav>
+        <button className={`mono ${styles.lang}`} onClick={() => setLang(other)} lang={other} aria-label={nav.lang}>
+          {other.toUpperCase()}
+        </button>
       </dialog>
     </header>
   )
