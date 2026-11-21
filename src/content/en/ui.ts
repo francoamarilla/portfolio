@@ -1,0 +1,82 @@
+import type { UiCopy } from '../../types/content'
+
+export const ui: UiCopy = {
+  meta: {
+    title: 'Franco Amarilla — Full Stack Developer | AI Engineer',
+    description:
+      'Portfolio of Franco Amarilla, Full Stack Developer and AI Engineer based in Córdoba, Argentina: web applications with Java, Spring Boot, Angular and React, and AI integration.',
+  },
+  nav: {
+    label: 'Main navigation',
+    home: 'Home',
+    about: 'About',
+    projects: 'Projects',
+    stack: 'Tech stack',
+    education: 'Education',
+    contact: 'Contact',
+    skip: 'Skip to content',
+    menu: 'Menu',
+    close: 'Close',
+    lang: 'Ver en español',
+  },
+  hero: {
+    ctaProjects: 'View projects',
+    ctaCv: 'Download CV',
+    scroll: 'Scroll',
+  },
+  social: {
+    email: 'Send email',
+    github: 'GitHub',
+    linkedin: 'LinkedIn',
+    cv: 'CV',
+  },
+  projects: {
+    title: 'Projects',
+    intro: 'Each project covers the problem, the solution and the technical decisions behind it.',
+    counter: 'of',
+    more: 'More projects',
+    viewProject: 'View project',
+    back: 'Back to projects',
+    prev: 'Previous',
+    next: 'Next',
+    repo: 'Repository',
+    demo: 'Demo',
+    stack: 'Stack',
+    gallery: 'Gallery',
+    zoom: 'Enlarge image',
+    sections: {
+      problem: 'Problem',
+      solution: 'Solution',
+      features: 'Key features',
+      highlights: 'Technical highlights',
+    },
+  },
+  about: { title: 'About' },
+  stack: {
+    title: 'Tech stack',
+    groups: {
+      languages: 'Languages',
+      ai: 'Artificial intelligence',
+      backend: 'Backend',
+      frontend: 'Frontend',
+      databases: 'Databases',
+      testing: 'Testing',
+      tools: 'DevOps & tools',
+    },
+  },
+  education: { title: 'Education' },
+  contact: {
+    title: "Let's build something together.",
+    body: "I'm open to new professional opportunities, collaborations and software and AI development projects.",
+    locationLabel: 'Location',
+    location: 'Córdoba, Argentina',
+  },
+  footer: {
+    top: 'Back to top',
+  },
+  notFound: {
+    title: 'Page not found',
+    body: 'This address does not exist or the project was renamed.',
+    cta: 'Back to home',
+  },
+}

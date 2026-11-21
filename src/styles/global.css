@@ -165,25 +165,6 @@ section[id] {
   transform: translateX(0.25em);
 }
 
-/* Contenido pendiente */
-.pending {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.6em;
-  flex-wrap: wrap;
-  padding: 0.35em 0.7em;
-  border: 1px dashed var(--line-strong);
-  border-radius: var(--radius-s);
-  color: var(--muted);
-}
-div.pending {
-  display: flex;
-}
-.pending__tag {
-  color: var(--accent);
-  font-size: 0.6875rem;
-}
-
 /* Links sociales */
 .social {
   display: flex;
@@ -200,13 +181,6 @@ div.pending {
   color: var(--accent);
   border-color: var(--accent);
 }
-.social__pending {
-  color: var(--muted);
-}
-.social__pending .mono {
-  font-size: 0.6875rem;
-}
-
 /* Títulos con SplitText (mask: 'lines'): la máscara recorta en el alto de línea,
    que en titulares es < 1 y cortaría descendentes (j, p, g). Se amplía sin mover el layout.
    Apunta solo a la máscara: los spans temporales de palabras no deben volverse bloque. */

@@ -1,8 +1,8 @@
+import { useState, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router'
-import { Pending } from '../components/Pending'
+import { Lightbox } from '../components/projects/Lightbox'
 import { ProjectMedia } from '../components/projects/ProjectMedia'
-import { ProjectBadges, ProjectTags } from '../components/projects/ProjectMeta'
-import { showPlaceholders } from '../config'
+import { ProjectTags } from '../components/projects/ProjectMeta'
 import { content } from '../content'
 import { projects } from '../data/projects'
 import { isValidHref } from '../lib/url'
@@ -14,33 +14,25 @@ import styles from './ProjectPage.module.css'
 
 const { ui } = content
 
-/** Orden de las secciones del detalle. Agregar o quitar una sección = editar esta lista y los textos. */
-const SECTIONS: ProjectDetailKey[] = ['problem', 'solution', 'features', 'architecture', 'challenges', 'learnings']
-
-const hasContent = (k: ProjectDetailKey, text: ProjectCopy) =>
-  k === 'features' ? !!(text.features?.length || text.upcoming?.length) : !!text[k]
+/** Orden de las secciones del detalle. */
+const SECTIONS: ProjectDetailKey[] = ['problem', 'solution', 'features', 'highlights']
 
 function SectionBody({ k, text }: { k: ProjectDetailKey; text: ProjectCopy }) {
-  if (k === 'features') {
-    return (
-      <ul className={styles.features}>
-        {text.features?.map((f) => (
-          <li key={f}>{f}</li>
-        ))}
-        {text.upcoming?.map((f) => (
-          <li key={f} className={styles.upcoming}>
-            <span className={`mono ${styles.upcomingTag}`}>{text.upcomingLabel ?? ui.status.upcoming}</span>
-            {f}
-          </li>
-        ))}
-      </ul>
-    )
-  }
-  return <p>{text[k]}</p>
+  const value = text[k]
+  if (typeof value === 'string') return <p>{value}</p>
+  return (
+    <ul className={styles.features}>
+      {value.map((f) => (
+        <li key={f}>{f}</li>
+      ))}
+    </ul>
+  )
 }
 
 export function ProjectPage() {
   const { slug } = useParams()
+  // imagen ampliada en el visor (índice en `images`); null = cerrado
+  const [zoomed, setZoomed] = useState<number | null>(null)
   const index = projects.findIndex((p) => p.slug === slug)
   if (index === -1) return <NotFound />
 
@@ -48,6 +40,21 @@ export function ProjectPage() {
   const text = content.projects[project.slug]
   const prev = projects[(index - 1 + projects.length) % projects.length]
   const next = projects[(index + 1) % projects.length]
+  // portada + galería, en el orden en que se recorren en el visor
+  const images = [
+    ...(project.coverImage ? [{ src: project.coverImage, alt: project.name }] : []),
+    ...(project.gallery ?? []).map((src, i) => ({ src, alt: text.galleryAlt?.[i] })),
+  ]
+  const zoomable = (i: number, media: ReactNode) => (
+    <button
+      type="button"
+      className={styles.zoom}
+      onClick={() => setZoomed(i)}
+      aria-label={images[i].alt ? `${ui.projects.zoom}: ${images[i].alt}` : ui.projects.zoom}
+    >
+      {media}
+    </button>
+  )
   const links = [
     { href: project.repositoryUrl, label: ui.projects.repo },
     { href: project.demoUrl, label: ui.projects.demo },
@@ -57,7 +64,7 @@ export function ProjectPage() {
     // key: al pasar de un proyecto a otro se remonta todo, así las animaciones de entrada se reinician
     <article key={project.slug} className={styles.page}>
       <title>{`${project.name} — ${ui.meta.title}`}</title>
-      <meta name="description" content={text.summary ?? ui.meta.description} />
+      <meta name="description" content={text.summary} />
 
       <header className={`container ${styles.hero}`}>
         <Link to={{ pathname: '/', hash: 'projects' }} className={`mono ${styles.back}`}>
@@ -70,13 +77,8 @@ export function ProjectPage() {
           {project.name}
         </SplitReveal>
         <Reveal className={styles.intro} delay={0.3}>
-          <ProjectBadges project={project} text={text} />
-          {text.summary ? <p className={styles.summary}>{text.summary}</p> : <Pending>{ui.projects.summaryPending}</Pending>}
-          {text.note && (
-            <p className={styles.note}>
-              <span className="mono">{ui.projects.note}</span> {text.note}
-            </p>
-          )}
+          <p className={`mono ${styles.subtitle}`}>{text.subtitle}</p>
+          <p className={styles.summary}>{text.summary}</p>
           {links.length > 0 && (
             <div className={styles.links}>
               {links.map((l) => (
@@ -90,7 +92,11 @@ export function ProjectPage() {
       </header>
 
       <div className="container">
-        <ProjectMedia label={project.name} src={project.coverImage} ratio="21 / 9" />
+        {project.coverImage ? (
+          zoomable(0, <ProjectMedia label={project.name} src={project.coverImage} ratio="natural" />)
+        ) : (
+          <ProjectMedia label={project.name} ratio="21 / 9" />
+        )}
       </div>
 
       <div className={`container ${styles.sections}`}>
@@ -103,40 +109,55 @@ export function ProjectPage() {
           </div>
         </section>
 
-        {SECTIONS.map((k) => {
-          const filled = hasContent(k, text)
-          if (!filled && !showPlaceholders) return null
-          return (
-            <section key={k} className={styles.row} aria-labelledby={`${k}-label`}>
-              <h2 id={`${k}-label`} className={`mono ${styles.label}`}>
-                {ui.projects.sections[k]}
-              </h2>
-              <Reveal className={styles.content}>
-                {filled ? <SectionBody k={k} text={text} /> : <Pending>{ui.projects.sectionPending}</Pending>}
-              </Reveal>
-            </section>
-          )
-        })}
+        {SECTIONS.map((k) => (
+          <section key={k} className={styles.row} aria-labelledby={`${k}-label`}>
+            <h2 id={`${k}-label`} className={`mono ${styles.label}`}>
+              {ui.projects.sections[k]}
+            </h2>
+            <Reveal className={styles.content}>
+              <SectionBody k={k} text={text} />
+            </Reveal>
+          </section>
+        ))}
 
-        {(project.gallery?.length || showPlaceholders) && (
+        {text.results && (
+          <section className={styles.row} aria-labelledby="results-label">
+            <h2 id="results-label" className={`mono ${styles.label}`}>
+              {text.results.title}
+            </h2>
+            <Reveal className={styles.content}>
+              <ul className={styles.features}>
+                {text.results.items.map((r) => (
+                  <li key={r}>{r}</li>
+                ))}
+              </ul>
+              {text.results.note && <p className={styles.note}>{text.results.note}</p>}
+            </Reveal>
+          </section>
+        )}
+
+        {project.gallery?.length ? (
           <section className={styles.row} aria-labelledby="gallery-label">
             <h2 id="gallery-label" className={`mono ${styles.label}`}>
               {ui.projects.gallery}
             </h2>
             <div className={styles.content}>
-              {project.gallery?.length ? (
-                <div className={styles.gallery}>
-                  {project.gallery.map((img) => (
-                    <ProjectMedia key={img.src} label={project.name} src={img.src} alt={img.alt} />
-                  ))}
-                </div>
-              ) : (
-                <Pending>{ui.projects.galleryPending}</Pending>
-              )}
+              <div className={styles.gallery}>
+                {project.gallery.map((src, i) => {
+                  const at = i + (project.coverImage ? 1 : 0)
+                  return (
+                    <div key={src}>
+                      {zoomable(at, <ProjectMedia label={project.name} src={src} alt={text.galleryAlt?.[i]} ratio="natural" />)}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </section>
-        )}
+        ) : null}
       </div>
+
+      <Lightbox images={images} index={zoomed} onChange={setZoomed} />
 
       <nav className={`container ${styles.pager}`} aria-label={ui.projects.title}>
         <Link to={`/projects/${prev.slug}`} className={styles.pagerLink}>

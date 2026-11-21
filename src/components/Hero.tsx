@@ -2,13 +2,15 @@ import { useRef } from 'react'
 import { Link } from 'react-router'
 import { content } from '../content'
 import { profile } from '../data/profile'
+import { socialLinks } from '../data/social-links'
+import { isValidHref } from '../lib/url'
 import { gsap, MOTION_OK, SplitText, useGSAP } from '../motion/gsap'
 import { AnimatedNetwork } from './AnimatedNetwork'
-import { Pending } from './Pending'
 import { SocialLinks } from './SocialLinks'
 import styles from './Hero.module.css'
 
 const { ui } = content
+const cv = socialLinks.find((l) => l.id === 'cv')?.url
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
@@ -54,18 +56,20 @@ export function Hero() {
           {profile.role}
         </p>
         <h1 id="hero-name" ref={name} className={styles.name}>
-          {profile.name ?? ui.placeholders.name}
+          {profile.name}
         </h1>
         <div className={styles.intro} data-hero="intro">
-          {content.profile.intro ?? <Pending>{ui.placeholders.intro}</Pending>}
+          {content.profile.intro}
         </div>
         <div className={styles.ctas} data-hero="ctas">
           <Link className="btn btn--primary" to={{ pathname: '/', hash: 'projects' }}>
             {ui.hero.ctaProjects} <span className="btn__arrow" aria-hidden="true">→</span>
           </Link>
-          <Link className="btn" to={{ pathname: '/', hash: 'contact' }}>
-            {ui.hero.ctaContact}
-          </Link>
+          {isValidHref(cv) && (
+            <a className="btn" href={cv} download>
+              {ui.hero.ctaCv} <span aria-hidden="true">↓</span>
+            </a>
+          )}
         </div>
         <div data-hero="social">
           <SocialLinks only={['github', 'linkedin']} />

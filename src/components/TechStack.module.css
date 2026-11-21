@@ -2,10 +2,9 @@
   padding-block: var(--section-y);
 }
 
+/* una categoría debajo de otra; en desktop cada una es una fila (como Educación) */
 .groups {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-  gap: 0 clamp(2rem, 4vw, 3.5rem);
 }
 
 .group {
@@ -55,35 +54,21 @@ li.chip:hover {
   background: var(--accent-soft);
 }
 
-/* a confirmar: borde punteado y tono apagado */
-.chip[data-state='unconfirmed'] {
-  border-style: dashed;
-  color: var(--muted);
-}
-/* en desarrollo: punto de acento delante */
-.chip[data-state='in-development']::before {
-  content: '';
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  border: 1px solid var(--accent);
+.icon {
+  width: 1em;
+  height: 1em;
+  flex: none;
+  fill: currentColor;
+  opacity: 0.85;
 }
 
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 2rem;
-  margin-top: 2rem;
-  color: var(--muted);
-}
-.legend li {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-.legend .chip {
-  width: 1.75rem;
-  height: 1rem;
-  padding: 0;
-  justify-content: center;
+@media (min-width: 900px) {
+  .group {
+    grid-template-columns: auto minmax(12rem, 1fr) 3fr;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+  .chips {
+    grid-column: 3;
+  }
 }

@@ -20,7 +20,9 @@
 .inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr); /* una palabra larga no puede ensanchar la columna */
-  gap: clamp(2.5rem, 5vw, 4rem);
+  justify-items: center;
+  gap: clamp(2rem, 4vw, 3rem);
+  text-align: center;
 }
 
 .index {
@@ -28,73 +30,81 @@
 }
 
 .title {
-  font-size: var(--fs-display);
   /* tope por ancho: la palabra más larga del título tiene que entrar en mobile */
   font-size: min(var(--fs-display), 18svh, 12.5vw);
   line-height: 0.95;
   letter-spacing: -0.05em;
-  max-width: 13ch;
+  max-width: 14ch;
+  text-wrap: balance;
 }
 
-.row {
+/* texto, email, logos y ubicación: apilados y centrados */
+.stack {
   display: grid;
-  gap: 2rem 4rem;
-  align-items: end;
+  justify-items: center;
+  gap: clamp(1.75rem, 3.5vw, 2.5rem);
 }
 
 .body {
-  max-width: 28rem;
+  max-width: 34rem;
   font-size: var(--fs-lead);
   color: var(--muted);
 }
 
-.emailBlock {
-  display: grid;
-  gap: 0.75rem;
-  justify-items: start;
+.profiles {
+  display: flex;
+  gap: 1rem;
 }
 
-.label {
+.profile {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--text);
+  transition:
+    color var(--dur-fast),
+    border-color var(--dur-fast),
+    background-color var(--dur-fast),
+    transform var(--dur-base) var(--ease-out);
+}
+.profile svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: currentColor;
+}
+.profile svg.stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.profile:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+.profile:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.address {
+  margin-top: -0.75rem; /* pegada a los íconos: es su versión en texto */
+  font-size: var(--fs-mono);
+  text-transform: none; /* .mono pone mayúsculas; el email se lee como se escribe */
+  letter-spacing: 0.02em;
   color: var(--muted);
+  transition: color var(--dur-fast);
 }
-
-.email {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  font-family: var(--font-display);
-  font-size: var(--fs-h3);
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  word-break: break-all;
-  background: linear-gradient(var(--accent), var(--accent)) left bottom / 100% 1px no-repeat;
-  padding-bottom: 0.15em;
-  transition: color var(--dur-base);
-}
-.email:hover {
+.address:hover {
   color: var(--accent);
 }
-.arrow {
-  color: var(--accent);
-  transition: transform var(--dur-base) var(--ease-out);
-}
-.email:hover .arrow {
-  transform: translateX(0.25em);
-}
 
-.elsewhere {
-  display: grid;
-  gap: 0.75rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--line);
-}
-
-@media (min-width: 900px) {
-  .row {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-  .emailBlock {
-    justify-self: end;
-    justify-items: end;
-  }
+.location {
+  color: var(--muted);
 }

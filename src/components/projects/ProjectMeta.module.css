@@ -1,42 +1,7 @@
-.badges,
 .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  padding: 0.35rem 0.7rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  font-size: 0.6875rem;
-  color: var(--text);
-}
-.badge::before {
-  content: '';
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  background: var(--muted);
-}
-.badge[data-tone='in-development']::before {
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-}
-.badge[data-tone='completed']::before {
-  background: var(--accent);
-}
-/* pendiente: anillo vacío, nunca verde de "disponible" */
-.badge[data-tone='pending'] {
-  border-style: dashed;
-  color: var(--muted);
-}
-.badge[data-tone='pending']::before {
-  background: transparent;
-  border: 1px solid var(--muted);
 }
 
 .tags li {

@@ -6,17 +6,19 @@ import { isValidHref } from '../lib/url'
 import { gsap, MOTION_OK, useGSAP } from '../motion/gsap'
 import { Reveal } from '../motion/Reveal'
 import { SplitReveal } from '../motion/SplitReveal'
-import { Pending } from './Pending'
-import { SocialLinks } from './SocialLinks'
+import { techIcons } from './tech-icons'
 import styles from './Contact.module.css'
 
-const { contact: ui } = content.ui
+const { contact: ui, social } = content.ui
 const INDEX = String(sectionIds.indexOf('contact') + 1).padStart(2, '0')
 
 export function Contact() {
   const root = useRef<HTMLElement>(null)
-  const email = socialLinks.find((l) => l.id === 'email')?.url
-  const hasEmail = isValidHref(email) && email.startsWith('mailto:')
+  // email, LinkedIn y GitHub como botones redondos con logo, en ese orden
+  const profiles = (['email', 'linkedin', 'github'] as const)
+    .map((id) => ({ id, url: socialLinks.find((l) => l.id === id)?.url }))
+    .filter((l): l is { id: 'email' | 'linkedin' | 'github'; url: string } => isValidHref(l.url))
+  const email = profiles.find((l) => l.id === 'email')?.url
 
   // cierre: la línea superior se dibuja de lado a lado al entrar la sección
   useGSAP(
@@ -43,26 +45,45 @@ export function Contact() {
           {ui.title}
         </SplitReveal>
 
-        <Reveal className={styles.row}>
+        <Reveal className={styles.stack}>
           <p className={styles.body}>{ui.body}</p>
-          <div className={styles.emailBlock}>
-            <p className={`mono ${styles.label}`}>{ui.emailLabel}</p>
-            {hasEmail ? (
-              <a className={styles.email} href={email}>
-                {email.replace('mailto:', '')}
-                <span className={styles.arrow} aria-hidden="true">
-                  →
-                </span>
-              </a>
-            ) : (
-              <Pending>{ui.emailPending}</Pending>
-            )}
-          </div>
-        </Reveal>
 
-        <Reveal className={styles.elsewhere}>
-          <p className={`mono ${styles.label}`}>{ui.elsewhere}</p>
-          <SocialLinks only={['linkedin', 'github', 'cv']} />
+          <ul className={styles.profiles}>
+            {profiles.map(({ id, url }) => (
+              <li key={id}>
+                <a
+                  className={styles.profile}
+                  href={url}
+                  aria-label={id === 'email' ? `${social.email}: ${url.replace('mailto:', '')}` : social[id]}
+                  title={id === 'email' ? url.replace('mailto:', '') : social[id]}
+                  {...(url.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}
+                >
+                  {id === 'email' ? (
+                    // arroba de trazo (Lucide "at-sign", ISC); los logos de marca son de relleno
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.stroke}>
+                      <circle cx="12" cy="12" r="4" />
+                      <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d={techIcons[id]} />
+                    </svg>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {email && (
+            <a className={`mono ${styles.address}`} href={email}>
+              {email.replace('mailto:', '')}
+            </a>
+          )}
+
+          <p className={`mono ${styles.location}`}>
+            <span className="sr-only">{ui.locationLabel}: </span>
+            {ui.location}
+          </p>
         </Reveal>
       </div>
     </section>

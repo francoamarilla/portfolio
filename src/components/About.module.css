@@ -14,13 +14,7 @@
   line-height: 1.12;
   letter-spacing: -0.03em;
   text-wrap: balance;
-  max-width: 18ch;
-}
-
-.side {
-  display: grid;
-  gap: clamp(2.5rem, 5vw, 3.5rem);
-  align-content: start;
+  max-width: 24ch;
 }
 
 .body {
@@ -29,82 +23,7 @@
   font-size: var(--fs-lead);
   color: var(--muted);
   max-width: 36rem;
-}
-
-.block {
-  display: grid;
-  gap: 1.25rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--line);
-}
-
-.label {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-}
-
-/* nodos conectados por una línea vertical */
-.focus {
-  position: relative;
-  display: grid;
-  gap: 1.25rem;
-}
-.focus::before {
-  content: '';
-  position: absolute;
-  left: 0.3rem;
-  top: 0.6rem;
-  bottom: 0.6rem;
-  width: 1px;
-  background: linear-gradient(var(--accent), var(--line-strong));
-}
-
-.focusItem {
-  position: relative;
-  display: grid;
-  gap: 0.25rem;
-  padding-left: 2rem;
-}
-
-.node {
-  position: absolute;
-  left: 0;
-  top: 0.45rem;
-  width: 0.65rem;
-  height: 0.65rem;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 1px solid var(--accent);
-}
-.focusItem:first-child .node {
-  background: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
-}
-
-.focusTitle {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  letter-spacing: -0.02em;
-}
-
-.focusText {
-  color: var(--muted);
-}
-
-.education {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1rem;
-}
-
-.institution {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  letter-spacing: -0.02em;
+  align-content: start;
 }
 
 @media (min-width: 900px) {

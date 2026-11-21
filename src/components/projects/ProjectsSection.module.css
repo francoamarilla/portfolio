@@ -22,9 +22,9 @@
   display: grid;
   gap: 4rem clamp(1.5rem, 3vw, 2.5rem);
 }
-/* 1 → 3 columnas, sin paso intermedio a 2: con tres proyectos dejaría uno huérfano */
-@media (min-width: 900px) {
+/* dos proyectos compactos: 1 → 2 columnas */
+@media (min-width: 768px) {
   .grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
