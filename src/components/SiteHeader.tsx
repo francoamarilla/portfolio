@@ -7,6 +7,13 @@ import styles from './SiteHeader.module.css'
 
 const { nav } = content.ui
 const other = content.lang === 'es' ? 'en' : 'es'
+// el nombre accesible empieza con el texto visible ("EN"): así también responde a control por voz
+const langLabel = (
+  <>
+    {other.toUpperCase()}
+    <span className="sr-only"> · {nav.lang}</span>
+  </>
+)
 
 export function SiteHeader() {
   const [hidden, setHidden] = useState(false)
@@ -59,7 +66,8 @@ export function SiteHeader() {
     ))
 
   return (
-    <header className={`${styles.header} ${hidden ? styles.hidden : ''}`}>
+    // reaparece al recibir foco: navegando con Shift+Tab, el link enfocado nunca queda oculto
+    <header className={`${styles.header} ${hidden ? styles.hidden : ''}`} onFocus={() => setHidden(false)}>
       <a className="skip-link" href="#main">
         {nav.skip}
       </a>
@@ -70,8 +78,8 @@ export function SiteHeader() {
         <nav aria-label={nav.label} className={styles.desktop}>
           <ul>{links()}</ul>
         </nav>
-        <button className={`mono ${styles.lang}`} onClick={() => setLang(other)} lang={other} aria-label={nav.lang}>
-          {other.toUpperCase()}
+        <button className={`mono ${styles.lang}`} onClick={() => setLang(other)} lang={other}>
+          {langLabel}
         </button>
         <button className={`mono ${styles.menuBtn}`} onClick={openMenu} aria-haspopup="dialog">
           {nav.menu}
@@ -86,8 +94,8 @@ export function SiteHeader() {
         <nav aria-label={nav.label}>
           <ul>{links(true)}</ul>
         </nav>
-        <button className={`mono ${styles.lang}`} onClick={() => setLang(other)} lang={other} aria-label={nav.lang}>
-          {other.toUpperCase()}
+        <button className={`mono ${styles.lang}`} onClick={() => setLang(other)} lang={other}>
+          {langLabel}
         </button>
       </dialog>
     </header>

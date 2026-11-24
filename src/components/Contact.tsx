@@ -9,7 +9,7 @@ import { SplitReveal } from '../motion/SplitReveal'
 import { techIcons } from './tech-icons'
 import styles from './Contact.module.css'
 
-const { contact: ui, social } = content.ui
+const { contact: ui, social, newTab } = content.ui
 const INDEX = String(sectionIds.indexOf('contact') + 1).padStart(2, '0')
 
 export function Contact() {
@@ -54,7 +54,7 @@ export function Contact() {
                 <a
                   className={styles.profile}
                   href={url}
-                  aria-label={id === 'email' ? `${social.email}: ${url.replace('mailto:', '')}` : social[id]}
+                  aria-label={id === 'email' ? `${social.email}: ${url.replace('mailto:', '')}` : `${social[id]} ${newTab}`}
                   title={id === 'email' ? url.replace('mailto:', '') : social[id]}
                   {...(url.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}
                 >

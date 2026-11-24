@@ -31,6 +31,10 @@ jobs:
       - run: npm run build
       # GitHub Pages no tiene rewrites: 404.html = index.html para que las rutas del router carguen
       - run: cp dist/index.html dist/404.html
+      # ...pero responde con estado 404, y LinkedIn o los buscadores descartan el link. Una copia por
+      # proyecto hace que /projects/<slug> responda 200. ponytail: lista fija; data.test.ts falla si
+      # falta un slug de src/data/projects.ts.
+      - run: for s in causario recepta acopio sticky; do mkdir -p dist/projects/$s && cp dist/index.html dist/projects/$s/index.html; done
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

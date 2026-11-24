@@ -9,7 +9,10 @@ import { ui as esUi } from './es/ui'
 const es: Content = {
   lang: 'es',
   ui: esUi,
-  profile: { intro: 'Desarrollo aplicaciones web e integro soluciones de inteligencia artificial para resolver problemas reales.' },
+  profile: {
+    intro:
+      'Desarrollo aplicaciones Full Stack y sistemas de gestión con Java, Spring Boot, Angular y React, e integro modelos de lenguaje mediante tool calling, con validación en el backend y evaluaciones automatizadas.',
+  },
   about: esAbout.about,
   education: esAbout.education,
   projects: esProjects,
@@ -18,7 +21,10 @@ const es: Content = {
 const en: Content = {
   lang: 'en',
   ui: enUi,
-  profile: { intro: 'I build web applications and integrate artificial intelligence solutions to solve real problems.' },
+  profile: {
+    intro:
+      'I build full stack applications and management systems with Java, Spring Boot, Angular and React, and integrate language models through tool calling, with backend validation and automated evaluations.',
+  },
   about: enAbout.about,
   education: enAbout.education,
   projects: enProjects,

@@ -2,10 +2,11 @@ import type { AboutCopy, EducationCopy } from '../../types/content'
 
 export const about: AboutCopy = {
   statement:
-    'Soy Full Stack Developer y AI Engineer, enfocado en el desarrollo de aplicaciones de punta a punta y la integración de inteligencia artificial.',
+    'Soy Full Stack Developer y AI Engineer: construyo sistemas de gestión completos, desde la base de datos y la API hasta la interfaz, e integro asistentes de IA controlados por reglas de negocio.',
   body: [
-    'Trabajo principalmente con Java, Spring Boot, Angular y React, desarrollando sistemas que combinan lógica de negocio, automatización de procesos e interfaces intuitivas.',
-    'Me interesa construir productos tecnológicos que resuelvan necesidades concretas, desde su diseño hasta su despliegue.',
+    'Trabajo con Java 21 y Spring Boot en el backend, Angular y React con TypeScript en el frontend, PostgreSQL con Flyway, y Python con FastAPI para servicios de IA basados en tool calling.',
+    'Cuido la seguridad y la consistencia de los datos: autenticación JWT, control de acceso por roles, aislamiento multi-tenant con Row-Level Security y pruebas automatizadas con JUnit, Testcontainers y evaluaciones de LLMs.',
+    'Mi proyecto principal, Causario, se utiliza en una implementación piloto en un estudio jurídico de Córdoba.',
   ],
 }
 

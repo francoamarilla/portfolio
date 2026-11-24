@@ -2,10 +2,11 @@ import type { AboutCopy, EducationCopy } from '../../types/content'
 
 export const about: AboutCopy = {
   statement:
-    "I'm a Full Stack Developer and AI Engineer focused on building end-to-end applications and integrating artificial intelligence.",
+    "I'm a Full Stack Developer and AI Engineer: I build complete management systems, from the database and API to the interface, and integrate AI assistants governed by business rules.",
   body: [
-    'I work mainly with Java, Spring Boot, Angular and React, building systems that combine business logic, process automation and intuitive interfaces.',
-    "I'm interested in building products that solve concrete needs, from design to deployment.",
+    'I work with Java 21 and Spring Boot on the backend, Angular and React with TypeScript on the frontend, PostgreSQL with Flyway, and Python with FastAPI for tool-calling AI services.',
+    'I care about security and data consistency: JWT authentication, role-based access control, multi-tenant isolation with Row-Level Security, and automated testing with JUnit, Testcontainers and LLM evaluations.',
+    'My main project, Causario, is in use as a pilot at a law firm in Córdoba.',
   ],
 }
 

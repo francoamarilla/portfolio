@@ -16,6 +16,10 @@ interface Props {
   brand?: [string, string]
   /** desplazamiento leve con el scroll (solo desktop) */
   parallax?: boolean
+  /** tamaño de la captura: con ratio 'natural' reserva el alto antes de que cargue */
+  size?: [number, number]
+  /** imagen principal, visible al cargar: se pide enseguida y con prioridad (LCP) */
+  priority?: boolean
   className?: string
 }
 
@@ -23,7 +27,18 @@ interface Props {
  * Marco de captura. Sin imagen muestra un placeholder identificado, nunca una captura falsa.
  * Reemplazar la captura no cambia el layout: el alto lo define `ratio`.
  */
-export function ProjectMedia({ label, src, logo, brand, alt = '', ratio = '16 / 10', parallax = false, className = '' }: Props) {
+export function ProjectMedia({
+  label,
+  src,
+  logo,
+  brand,
+  alt = '',
+  ratio = '16 / 10',
+  parallax = false,
+  size,
+  priority = false,
+  className = '',
+}: Props) {
   const root = useRef<HTMLElement>(null)
   const viewport = useRef<HTMLDivElement>(null)
   const inner = useRef<HTMLDivElement>(null)
@@ -80,7 +95,7 @@ export function ProjectMedia({ label, src, logo, brand, alt = '', ratio = '16 / 
               <span className={styles.halo} aria-hidden="true" />
               <span className={styles.float}>
                 {/* decorativo: el nombre ya está en el título de la tarjeta */}
-                <img className={styles.logo} src={logo} alt="" decoding="async" />
+                <img className={styles.logo} src={logo} alt="" loading="lazy" decoding="async" />
               </span>
             </div>
           ) : src && !failed ? (
@@ -88,7 +103,10 @@ export function ProjectMedia({ label, src, logo, brand, alt = '', ratio = '16 / 
               className={styles.media}
               src={src}
               alt={alt}
-              loading="lazy"
+              width={size?.[0]}
+              height={size?.[1]}
+              loading={priority ? 'eager' : 'lazy'}
+              fetchPriority={priority ? 'high' : undefined}
               decoding="async"
               onError={() => setFailed(true)}
             />

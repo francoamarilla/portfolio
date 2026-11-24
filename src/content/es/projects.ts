@@ -10,6 +10,12 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       'La gestión de expedientes y la consulta manual de movimientos judiciales generan tareas repetitivas y dificultan la centralización de la información en los estudios jurídicos.',
     solution:
       'Desarrollo de una plataforma integral de gestión jurídica con una aplicación de escritorio que automatiza la consulta y sincronización de movimientos desde la Extranet del Poder Judicial de Córdoba.',
+    challenges: [
+      'Arquitectura híbrida escritorio–nube: un agente Java dentro de una aplicación Electron consulta el portal judicial desde las PC del estudio, y la nube (API, worker y base de datos) guarda los datos, reparte el trabajo y envía los avisos.',
+      'Las credenciales y la sesión del portal judicial permanecen en las computadoras del estudio: la nube no almacena usuario, contraseña ni sesión, y cada PC vinculada usa un token propio y revocable.',
+      'Aislamiento de datos por estudio con Row-Level Security en PostgreSQL, verificado con tests de integración multi-tenant sobre Testcontainers.',
+      'Sincronización automatizada y en solo lectura de movimientos, cédulas y oficios, con cálculo de vencimientos en días hábiles según el calendario judicial de cada sede.',
+    ],
     features: [
       'Gestión de expedientes judiciales.',
       'Administración de clientes.',
@@ -18,13 +24,12 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       'Sincronización automatizada de movimientos judiciales.',
     ],
     highlights: [
-      'API en Java 21 y Spring Boot, un worker para mails y calendario, y un agente en Java que corre en la PC del estudio.',
-      'Persistencia de datos mediante PostgreSQL y gestión de migraciones con Flyway.',
-      'Aplicación de escritorio en Electron que aloja al agente y consulta el portal en solo lectura desde la PC del estudio.',
-      'Automatización de consultas y sincronización de movimientos judiciales.',
-      'Pipeline CI/CD mediante GitHub Actions.',
-      'Generación de instaladores para Windows y actualizaciones automáticas.',
+      'API en Java 21 y Spring Boot, worker para mails y calendario, y frontend en Angular.',
+      'Persistencia en PostgreSQL con migraciones Flyway.',
+      'Pipeline de GitHub Actions que ejecuta los tests de backend, frontend y escritorio antes de generar el instalador para Windows con actualizaciones automáticas.',
+      'Sincronización con Google Calendar por usuario mediante OAuth y resumen diario por mail.',
     ],
+    linksNote: 'El código principal es privado; el repositorio público reúne la documentación técnica del proyecto.',
     results: {
       title: 'Validación',
       items: ['Implementación piloto en un estudio jurídico de Córdoba integrado por tres profesionales.'],
@@ -45,6 +50,12 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       'La gestión manual de turnos consume tiempo y dificulta la coordinación entre clientes, profesionales y establecimientos.',
     solution:
       'Desarrollo de una plataforma de gestión de turnos que integra un asistente conversacional basado en Claude, capaz de interactuar con las funcionalidades del sistema mediante lenguaje natural.',
+    challenges: [
+      'Integración de IA mediante tool calling: el asistente consulta disponibilidad y propone reservas, cancelaciones y reprogramaciones con herramientas tipadas, desde un microservicio en Python y FastAPI sin estado.',
+      'El modelo propone y el backend decide: Spring Boot valida cada operación con sus reglas de negocio en dos pasos (preparar y confirmar), y la precisión del pedido la evalúa el código, no el modelo.',
+      'Aislamiento multi-tenant con Row-Level Security en PostgreSQL: el negocio, la conversación y el cliente se obtienen del token y de la base de datos, nunca de lo que escribe el modelo.',
+      'Evaluaciones automatizadas en CI (verificaciones deterministas y LLM-as-a-Judge), límites por IP y sesión, topes de gasto y un bot de botones como respaldo cuando la IA no está disponible.',
+    ],
     features: [
       'Gestión de turnos y disponibilidad.',
       'Administración de profesionales y servicios.',
@@ -52,13 +63,14 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       'Asistente conversacional para la gestión de reservas.',
     ],
     highlights: [
-      'Microservicio de inteligencia artificial desarrollado con Python y FastAPI.',
-      'Integración de LLMs mediante tool calling.',
-      'Validación de operaciones y reglas de negocio desde el backend.',
-      'Evaluaciones automatizadas mediante LLM-as-a-Judge y verificaciones deterministas.',
-      'Control de consumo, límites de solicitudes y presupuesto de IA.',
-      'Autenticación mediante JWT y aislamiento de datos mediante Row-Level Security.',
+      'Backend en Java 21 y Spring Boot 4, frontend en React y TypeScript, y servicio de IA en Python y FastAPI.',
+      'Registro de cada turno del asistente: modelo, versión de prompt, tokens, costo y latencia.',
+      'Configuración del asistente por negocio, con un playground para probarla antes de publicarla.',
+      'Autenticación mediante JWT y migraciones de base de datos con Flyway.',
+      'Demo pública desplegada en Vercel, Render y Neon.',
     ],
+    linksNote:
+      'Explorá el panel de administración con datos de ejemplo y probá el asistente de inteligencia artificial desde la propia aplicación.',
     results: {
       title: 'Evaluación del asistente',
       items: [
@@ -78,21 +90,26 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       'La gestión manual de inventarios y ventas dificulta el control de existencias, la trazabilidad de operaciones y la consistencia de la información comercial.',
     solution:
       'Plataforma de gestión comercial que centraliza el inventario y las ventas, aplicando reglas de negocio para mantener la consistencia del stock.',
+    challenges: [
+      'Consistencia del inventario: ventas, anulaciones, compras y ajustes actualizan el stock en la capa de servicios, dentro de transacciones.',
+      'Trazabilidad: cada cambio de stock registra un movimiento con su tipo, cantidad, usuario y existencias anterior y posterior.',
+      'Control de concurrencia optimista con @Version: si dos operaciones modifican el mismo producto a la vez, una se rechaza en lugar de sobrescribir el stock.',
+      'Autenticación JWT y autorización por roles (ADMIN y OPERADOR) aplicada en el backend con Spring Security; los productos se dan de baja lógica para conservar el historial.',
+    ],
     features: [
       'Gestión de productos e inventario.',
       'Registro y administración de ventas.',
       'Actualización automática de existencias.',
       'Restitución de stock ante la cancelación de ventas.',
+      'Compras a proveedores y cierre de caja diario por medio de pago.',
       'Historial y trazabilidad de movimientos.',
       'Administración de usuarios y permisos.',
     ],
     highlights: [
-      'Arquitectura backend basada en Java y Spring Boot.',
-      'Diseño e implementación de API REST.',
-      'Validación de reglas de negocio para garantizar la consistencia del inventario.',
-      'Autenticación mediante JWT y autorización basada en roles.',
-      'Persistencia en PostgreSQL y gestión de migraciones mediante Flyway.',
-      'Interfaz web desarrollada con React y TypeScript.',
+      'Backend en Java 21 y Spring Boot con arquitectura en capas: controladores, servicios y repositorios con Spring Data JPA.',
+      'API REST documentada con Swagger/OpenAPI.',
+      'Persistencia en PostgreSQL con migraciones Flyway.',
+      'Interfaz web en React y TypeScript con TanStack Query.',
     ],
     galleryAlt: ['Historial de movimientos de stock', 'Listado de ventas', 'Productos con stock y márgenes'],
   },
@@ -104,6 +121,12 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       'La gestión manual de pedidos gastronómicos dificulta la coordinación entre clientes y establecimientos, así como el seguimiento de las operaciones.',
     solution:
       'Plataforma web que digitaliza el proceso de pedidos, desde la selección de productos hasta su recepción y administración por parte del establecimiento.',
+    challenges: [
+      'Canal STOMP autenticado con el mismo JWT del panel: el token viaja en el frame CONNECT, solo el rol ADMIN puede conectarse y suscribirse, y el vencimiento se controla en cada frame.',
+      'Los clientes no pueden enviar mensajes por el canal y los eventos solo transportan el id y el estado del pedido; el panel obtiene el detalle desde la API REST protegida.',
+      'Los eventos se publican después del commit de la transacción, para no notificar pedidos que no llegaron a guardarse.',
+      'El servidor recalcula los importes con los precios del catálogo y calcula el costo de envío según la distancia, dentro de un radio configurable.',
+    ],
     features: [
       'Catálogo digital de productos.',
       'Carrito de compras y generación de pedidos.',
@@ -112,14 +135,17 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       'Notificaciones en tiempo real.',
     ],
     highlights: [
-      'Arquitectura Full Stack basada en Java, Spring Boot y Angular.',
-      'Comunicación en tiempo real mediante WebSockets y STOMP.',
-      'Autenticación y autorización mediante JWT.',
-      'Validación y recálculo de importes de pedidos desde el backend.',
-      'Pruebas automatizadas mediante JUnit y Mockito.',
-      'Contenedorización mediante Docker Compose.',
-      'Despliegue en un servidor VPS Linux con HTTPS.',
+      'Backend en Java 21 y Spring Boot; tienda y panel en Angular con TypeScript.',
+      'Persistencia en PostgreSQL con migraciones Flyway.',
+      'Pruebas unitarias y de integración con JUnit 5, Mockito y Spring Boot Test, incluida la seguridad del canal STOMP, y specs de Vitest para el panel.',
+      'Contenedorización con Docker Compose y nginx.',
     ],
+    results: {
+      title: 'Estado',
+      items: [
+        'Proyecto de portfolio sin uso comercial. Estuvo desplegado en un VPS Linux con Docker Compose y HTTPS; actualmente no está en línea.',
+      ],
+    },
     galleryAlt: ['Panel: gestión de la carta', 'Panel: ofertas', 'Panel: informes de ventas'],
   },
 }

@@ -15,7 +15,7 @@ import styles from './ProjectPage.module.css'
 const { ui } = content
 
 /** Orden de las secciones del detalle. */
-const SECTIONS: ProjectDetailKey[] = ['problem', 'solution', 'features', 'highlights']
+const SECTIONS: ProjectDetailKey[] = ['problem', 'solution', 'challenges', 'features', 'highlights']
 
 function SectionBody({ k, text }: { k: ProjectDetailKey; text: ProjectCopy }) {
   const value = text[k]
@@ -42,16 +42,14 @@ export function ProjectPage() {
   const next = projects[(index + 1) % projects.length]
   // portada + galería, en el orden en que se recorren en el visor
   const images = [
-    ...(project.coverImage ? [{ src: project.coverImage, alt: project.name }] : []),
-    ...(project.gallery ?? []).map((src, i) => ({ src, alt: text.galleryAlt?.[i] })),
+    ...(project.coverImage ? [{ src: project.coverImage.src, alt: project.name }] : []),
+    ...(project.gallery ?? []).map((shot, i) => ({ src: shot.src, alt: text.galleryAlt?.[i] })),
   ]
+  // el nombre empieza con el del proyecto, que es el texto visible en la barra del marco (WCAG 2.5.3)
+  const zoomLabel = (alt?: string) =>
+    `${alt && alt !== project.name ? `${project.name}: ${alt}` : project.name} (${ui.projects.zoom})`
   const zoomable = (i: number, media: ReactNode) => (
-    <button
-      type="button"
-      className={styles.zoom}
-      onClick={() => setZoomed(i)}
-      aria-label={images[i].alt ? `${ui.projects.zoom}: ${images[i].alt}` : ui.projects.zoom}
-    >
+    <button type="button" className={styles.zoom} onClick={() => setZoomed(i)} aria-label={zoomLabel(images[i].alt)}>
       {media}
     </button>
   )
@@ -85,16 +83,24 @@ export function ProjectPage() {
               {links.map((l) => (
                 <a key={l.label} className="btn" href={l.href} target="_blank" rel="noopener noreferrer">
                   {l.label} <span aria-hidden="true">↗</span>
+                  <span className="sr-only"> {ui.newTab}</span>
                 </a>
               ))}
             </div>
           )}
+          {text.linksNote && <p className={styles.note}>{text.linksNote}</p>}
         </Reveal>
       </header>
 
       <div className="container">
         {project.coverImage ? (
-          zoomable(0, <ProjectMedia label={project.name} src={project.coverImage} ratio="natural" />)
+          zoomable(0, <ProjectMedia
+              label={project.name}
+              src={project.coverImage.src}
+              size={project.coverImage.size}
+              ratio="natural"
+              priority
+            />)
         ) : (
           <ProjectMedia label={project.name} ratio="21 / 9" />
         )}
@@ -144,11 +150,11 @@ export function ProjectPage() {
             </h2>
             <div className={styles.content}>
               <div className={styles.gallery}>
-                {project.gallery.map((src, i) => {
+                {project.gallery.map((shot, i) => {
                   const at = i + (project.coverImage ? 1 : 0)
                   return (
-                    <div key={src}>
-                      {zoomable(at, <ProjectMedia label={project.name} src={src} alt={text.galleryAlt?.[i]} ratio="natural" />)}
+                    <div key={shot.src}>
+                      {zoomable(at, <ProjectMedia label={project.name} src={shot.src} size={shot.size} alt={text.galleryAlt?.[i]} ratio="natural" />)}
                     </div>
                   )
                 })}

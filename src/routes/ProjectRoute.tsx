@@ -5,7 +5,8 @@ const ProjectPage = lazy(() => import('./ProjectPage').then((m) => ({ default: m
 
 export function ProjectRoute() {
   return (
-    <Suspense fallback={null}>
+    // el fallback ocupa la pantalla: mientras llega el chunk, el footer no se dibuja arriba para después saltar (CLS)
+    <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
       <ProjectPage />
     </Suspense>
   )

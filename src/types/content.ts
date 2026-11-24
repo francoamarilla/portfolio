@@ -4,6 +4,16 @@ import type { SectionId } from '../config'
 
 export type ProjectSlug = 'causario' | 'recepta' | 'acopio' | 'sticky'
 
+/** captura con su tamaño real [ancho, alto]: reserva el alto antes de cargar (sin saltos de layout).
+ *  data.test.ts compara el tamaño con el archivo. */
+export interface Shot {
+  src: string
+  size: [number, number]
+}
+
+/** visual: presentación pública del proyecto; interactive: la aplicación real con datos de demostración */
+export type DemoKind = 'visual' | 'interactive'
+
 export interface ProjectData {
   slug: ProjectSlug
   name: string
@@ -15,12 +25,14 @@ export interface ProjectData {
   /** colores de marca [oscuro, claro]: fondo y halo de la tarjeta */
   brand: [string, string]
   /** con asset(): lleva el prefijo del base del sitio */
-  coverImage?: string
-  gallery?: string[]
+  coverImage?: Shot
+  gallery?: Shot[]
   repositoryUrl?: string
   /** Public documentation or showcase; not the proprietary source repository. */
   showcaseUrl?: string
   demoUrl?: string
+  /** tipo de demo, mostrado en la tarjeta de la home */
+  demoKind?: DemoKind
 }
 
 export type SocialId = 'email' | 'github' | 'linkedin' | 'cv'
@@ -53,13 +65,17 @@ export interface ProjectCopy {
   solution: string
   features: string[]
   highlights: string[]
+  /** Desafíos y decisiones técnicas: 3 o 4, verificables en el código del proyecto */
+  challenges: string[]
+  /** Nota breve debajo de los botones de repositorio y demo */
+  linksNote?: string
   /** alt de cada imagen de la galería, en el mismo orden que ProjectData.gallery */
   galleryAlt?: string[]
-  /** Validación (Causario) o evaluación (Recepta) */
+  /** Validación (Causario), evaluación (Recepta) o estado (Sticky Fingers) */
   results?: { title: string; items: string[]; note?: string }
 }
 
-export type ProjectDetailKey = 'problem' | 'solution' | 'features' | 'highlights'
+export type ProjectDetailKey = 'problem' | 'solution' | 'challenges' | 'features' | 'highlights'
 
 export interface EducationCopy {
   title: string
@@ -73,6 +89,8 @@ export type Lang = 'es' | 'en'
 export interface UiCopy {
   meta: { title: string; description: string }
   nav: Record<SectionId, string> & { skip: string; menu: string; close: string; label: string; lang: string }
+  /** texto para lectores de pantalla en los links que abren otra pestaña */
+  newTab: string
   hero: { ctaProjects: string; ctaCv: string; scroll: string }
   social: Record<SocialId, string>
   projects: {
@@ -81,6 +99,8 @@ export interface UiCopy {
     counter: string
     more: string
     viewProject: string
+    /** etiqueta en la tarjeta de los proyectos con demo pública, según su tipo */
+    demoKinds: Record<DemoKind, string>
     back: string
     prev: string
     next: string

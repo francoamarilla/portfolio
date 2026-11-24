@@ -55,7 +55,10 @@ export function ProjectCard({ project, index, layout }: Props) {
         </div>
 
         <Reveal className={styles.details}>
-          <p className={`mono ${styles.subtitle}`}>{text.subtitle}</p>
+          <p className={`mono ${styles.subtitle}`}>
+            {text.subtitle}
+            {project.demoKind && ` · ${ui.demoKinds[project.demoKind]}`}
+          </p>
           <p className={styles.summary}>{text.summary}</p>
           <ProjectTags technologies={project.technologies} />
           {/* encima del área extendida, para que la flecha responda solo a este texto; mismo destino que el título */}
