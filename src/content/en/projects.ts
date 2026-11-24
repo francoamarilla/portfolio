@@ -63,10 +63,10 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       title: 'Assistant evaluation',
       items: [
         '29 of 29 evaluation scenarios passed.',
-        'Average cost of USD 0.00054 per evaluated interaction.',
-        'Average latency of 3.9 seconds.',
+        'Average cost of USD 0.00054 per evaluated scenario.',
+        'Average duration of 3.9 seconds per scenario.',
       ],
-      note: 'Results from the evaluation suite documented in the repository; these are not production metrics.',
+      note: 'Results from 29 documented scenarios using a simulated core. A scenario may include multiple turns; these are not production metrics, and cost may exclude the judge.',
     },
     galleryAlt: ['Business statistics', 'AI assistant settings', 'Dashboard home with the day overview'],
   },

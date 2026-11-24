@@ -57,6 +57,7 @@ export function ProjectPage() {
   )
   const links = [
     { href: project.repositoryUrl, label: ui.projects.repo },
+    { href: project.showcaseUrl, label: ui.projects.showcase },
     { href: project.demoUrl, label: ui.projects.demo },
   ].filter((l) => isValidHref(l.href))
 

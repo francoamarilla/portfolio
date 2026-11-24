@@ -63,10 +63,10 @@ export const projects: Record<ProjectSlug, ProjectCopy> = {
       title: 'Evaluación del asistente',
       items: [
         '29 de 29 escenarios de evaluación superados.',
-        'Coste promedio de USD 0,00054 por interacción evaluada.',
-        'Latencia promedio de 3,9 segundos.',
+        'Costo promedio de USD 0,00054 por escenario evaluado.',
+        'Duración promedio de 3,9 segundos por escenario.',
       ],
-      note: 'Resultados de la batería de evaluaciones documentada en el repositorio; no son métricas de producción.',
+      note: 'Resultados de la batería documentada de 29 escenarios con un núcleo simulado. Cada escenario puede incluir varios turnos; no son métricas de producción y el costo puede excluir al evaluador.',
     },
     galleryAlt: ['Estadísticas del negocio', 'Configuración del asistente de IA', 'Inicio del panel con el resumen del día'],
   },

@@ -23,7 +23,8 @@ export const projects: ProjectData[] = [
       asset('projects/causario/06-agenda-calendario.webp'),
       asset('projects/causario/09-modelos.webp'),
     ],
-    // repositorio privado: sin botón de código
+    // Código principal privado; el enlace público lleva únicamente a la documentación del proyecto.
+    showcaseUrl: 'https://github.com/francoamarilla/causario-showcase',
     demoUrl: 'https://francoamarilla.github.io/causario-demo/',
   },
   {

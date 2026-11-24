@@ -40,6 +40,7 @@ export const ui: UiCopy = {
     prev: 'Anterior',
     next: 'Siguiente',
     repo: 'Repositorio',
+    showcase: 'Documentación pública',
     demo: 'Demo',
     stack: 'Stack',
     gallery: 'Galería',

@@ -18,6 +18,8 @@ export interface ProjectData {
   coverImage?: string
   gallery?: string[]
   repositoryUrl?: string
+  /** Public documentation or showcase; not the proprietary source repository. */
+  showcaseUrl?: string
   demoUrl?: string
 }
 
@@ -83,6 +85,7 @@ export interface UiCopy {
     prev: string
     next: string
     repo: string
+    showcase: string
     demo: string
     stack: string
     gallery: string

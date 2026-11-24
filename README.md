@@ -1,94 +1,88 @@
-# Portfolio — Full Stack Developer
+# Portfolio — Franco Amarilla
 
-Portfolio personal: Home, Projects (con página de detalle por proyecto), About Me, Tech Stack y Contact.
+**Full Stack Developer | AI Engineer** · Córdoba, Argentina
 
-**Stack:** React 19 · TypeScript (strict) · Vite · React Router · GSAP (ScrollTrigger + SplitText) · Three.js vía React Three Fiber (solo el fondo del Hero) · CSS Modules con tokens.
+[Live portfolio](https://francoamarilla.github.io/portfolio/) · [Versión en español](README.es.md)
 
-Lo que falta completar (nombre, textos, links, capturas) está listado en [`CONTENT_TODO.md`](./CONTENT_TODO.md).
+A bilingual personal portfolio built with React and TypeScript. It presents four software projects through case studies, screenshots, technical decisions, and links to public source repositories, documentation, or demos as available.
 
-## Ejecutar
+## Featured projects
 
-Requiere Node 20.19+ o 22.12+.
+| Project | Focus | Links |
+|---|---|---|
+| **Causario** | Legal practice management, court-update synchronization, desktop/cloud integration, CI/CD | [Public documentation showcase](https://github.com/francoamarilla/causario-showcase) · [Demo](https://francoamarilla.github.io/causario-demo/) — main source code is private |
+| **Recepta** | AI-assisted appointment management, tool calling, LLM evaluations | [Repository](https://github.com/francoamarilla/Recepta) · [Demo](https://recepta-wheat.vercel.app/login) |
+| **Acopio** | Inventory and sales management, stock consistency, access control | [Repository](https://github.com/francoamarilla/Acopio) |
+| **Sticky Fingers** | Food ordering, real-time notifications, automated tests | [Repository](https://github.com/francoamarilla/StickyFingers) |
+
+The Causario showcase documents the product but does **not** contain its private application source code. The evaluation figures shown for Recepta refer to complete test scenarios, not individual chat messages or production traffic.
+
+## Technology stack
+
+- **Application:** React 19, TypeScript, React Router, Vite, CSS Modules.
+- **Motion and visuals:** GSAP (including ScrollTrigger and SplitText), Three.js via React Three Fiber for the hero background.
+- **Typography:** Inter, Space Grotesk and JetBrains Mono.
+- **Quality:** strict TypeScript checks, Oxlint and Vitest.
+- **Deployment:** GitHub Actions and GitHub Pages.
+
+## Run locally
+
+Use Node.js 22.12+ (or another version supported by the project's Vite and dependencies).
 
 ```bash
-npm install
-npm run dev       # desarrollo en http://localhost:5173
-npm run build     # compila a dist/ (incluye chequeo de tipos)
-npm run preview   # sirve dist/ para probar el build
-npm run lint      # oxlint
-npm test          # test de integridad de datos (Vitest)
+npm ci
+npm run dev       # Local development server
+npm run build     # TypeScript checks + production build
+npm run preview   # Preview the production build
+npm run lint      # Oxlint
+npm test          # Vitest
 ```
 
-## Dónde se edita cada cosa
+## Project structure and editing
 
-Los componentes no contienen textos ni datos: todo se cambia editando archivos de contenido.
+The site separates reusable UI, project metadata, and translated text:
 
-| Qué | Archivo |
+| Purpose | Location |
 |---|---|
-| Nombre, rol, tecnologías de la franja del Hero | `src/data/profile.ts` |
-| Presentación breve del Hero | `src/content/index.ts` → `profile.intro` |
-| Proyectos: orden, estado, stack, capturas, links | `src/data/projects.ts` |
-| Proyectos: resumen, problema, solución, funcionalidades… | `src/content/es/projects.ts` |
-| About Me | `src/content/es/about.ts` |
-| Tech Stack | `src/data/technologies.ts` |
-| Email, GitHub, LinkedIn, CV | `src/data/social-links.ts` |
-| Textos de interfaz (menú, botones, títulos, etiquetas) | `src/content/es/ui.ts` |
-| Colores, tipografía, espacios, duraciones | `src/styles/tokens.css` |
-| Metadatos para compartir en redes | `index.html` |
+| Name, role, hero technologies | `src/data/profile.ts` |
+| Project order, featured status, technologies, images, external links | `src/data/projects.ts` |
+| Spanish and English project descriptions | `src/content/es/projects.ts`, `src/content/en/projects.ts` |
+| Spanish and English UI copy and About content | `src/content/{es,en}/` |
+| Language selection and introductory copy | `src/content/index.ts` |
+| Email, GitHub, LinkedIn and CV links | `src/data/social-links.ts` |
+| Technology groups | `src/data/technologies.ts` |
+| Design tokens and animations | `src/styles/`, `src/motion/` |
+| Social-sharing metadata | `index.html` |
 
-### Contenido pendiente
+To add a project, update `ProjectSlug` in `src/types/content.ts`, add its metadata to `src/data/projects.ts`, and provide matching text for both languages. The `featured` flag controls the wider cards; the array defines the display order.
 
-Cualquier campo opcional que se deje vacío se muestra como un marcador visible con la etiqueta `placeholder`. Nunca se inventa contenido ni se muestran links rotos: un link sin URL válida aparece como "pendiente" y no es clickeable.
+External project URLs have distinct meanings: `repositoryUrl` points to a public source repository, `showcaseUrl` points to public documentation when the source is private, and `demoUrl` points to an interactive demo. Missing links are not rendered.
 
-Antes de publicar, `showPlaceholders = false` en `src/config.ts` oculta todos los marcadores que queden.
+### Languages
 
-### Agregar un proyecto
+Spanish and English are implemented. The site uses a saved preference from `localStorage` when available, otherwise the browser language. Visitors can switch languages in the navigation; the page reloads to apply the selection. The HTML `lang` attribute is updated accordingly.
 
-1. Sumar el slug al tipo `ProjectSlug` en `src/types/content.ts`.
-2. Agregarlo en `src/data/projects.ts`. La posición en el array es el orden en pantalla.
-3. Agregar sus textos en `src/content/es/projects.ts`. TypeScript avisa si falta.
+### Screenshots and assets
 
-Jerarquía: los proyectos con `featured: true` (hoy Causario y Turnos) se muestran arriba en formato ancho; el resto va en una grilla compacta de tres columnas bajo "Otros proyectos". Conviene listar primero los destacados, porque la numeración sigue el orden del array. La página `/projects/<slug>` se genera automáticamente.
+Images are stored under `public/projects/<slug>/` and referenced by the project data. The `asset()` helper applies Vite's base URL, so assets work under the GitHub Pages `/portfolio/` path.
 
-### Capturas
+### Motion and accessibility
 
-Guardarlas en `public/projects/<slug>/` y referenciarlas como `coverImage: '/projects/<slug>/cover.webp'`, o en `gallery` para la galería del detalle. El marco reserva el alto con una proporción fija, así que reemplazar una captura no mueve el layout. Si una ruta está mal, se muestra el placeholder en lugar de un hueco vacío.
+GSAP provides entrance and scroll animations. The hero uses a separately loaded React Three Fiber scene with a static fallback. Motion is reduced when the visitor prefers reduced motion, and the content remains readable without the animated scene.
 
-Formato recomendado: WebP. Portada de al menos 2000 px de ancho: 21:9 para los destacados y 16:10 para la grilla compacta.
+## Deployment
 
-### Agregar un idioma
+The site is a client-rendered single-page application deployed to:
 
-Los textos traducibles están en `src/content/es/`. Para sumar inglés:
+**https://francoamarilla.github.io/portfolio/**
 
-1. Crear `src/content/en/` con los mismos archivos, tipados con `Content`. TypeScript marca cualquier clave faltante.
-2. En `src/content/index.ts`, elegir el idioma: hoy exporta `es`; puede pasar a un contexto o a un parámetro de URL.
+`vite.config.ts` sets `base: '/portfolio/'`. The workflow at `.github/workflows/deploy.yml` runs dependency installation, tests and the production build, then deploys to GitHub Pages. It copies `dist/index.html` to `dist/404.html` so direct visits to React Router project pages can load on GitHub Pages.
 
-No hay que tocar componentes.
+The CV download and social-sharing image are stored in `public/`.
 
-## Animaciones
+## Status and limitations
 
-- `src/motion/gsap.ts` registra los plugins y define la curva y la duración por defecto.
-- `src/motion/SplitReveal.tsx` y `src/motion/Reveal.tsx` son componentes reutilizables (títulos por líneas y aparición de bloques). No dependen del largo del texto ni de la cantidad de elementos.
-- Todas las animaciones se crean dentro de `gsap.matchMedia()` con `prefers-reduced-motion: no-preference`. Con movimiento reducido no se crea ninguna y el contenido es visible desde el inicio. El estado oculto inicial lo pone GSAP, no el CSS, así que si el JS falla nada queda invisible.
-- **Fondo del Hero:** `src/components/AnimatedNetwork/`.
-  - `Scene.tsx` es la escena WebGL. La intensidad de la respuesta al cursor está en el bloque `POINTER`.
-  - `field.ts` define la cámara, la ola y el desvanecimiento hacia los bordes. Lo comparten la escena y el fallback.
-  - `NetworkFallback.tsx` es la versión SVG estática, que se usa sin WebGL, con movimiento reducido o con ahorro de datos.
-  - La escena se carga en un chunk aparte cuando el navegador queda libre y se pausa fuera de pantalla.
-
-## Publicar
-
-Es una SPA: el servidor tiene que responder `index.html` para cualquier ruta (por ejemplo `/projects/turnos`).
-
-- **Vercel:** `vercel.json` con `{ "rewrites": [{ "source": "/(.*)", "destination": "/" }] }`
-- **Netlify:** `public/_redirects` con `/*  /index.html  200`
-
-Antes de publicar, revisar [`CONTENT_TODO.md`](./CONTENT_TODO.md), en especial `og:image` y `og:url`, que necesitan el dominio.
-
-## Estado y limitaciones conocidas
-
-- Lighthouse (celular simulado, build local): Rendimiento ~71, Accesibilidad 100, Buenas prácticas 100, SEO 100.
-- **Rendimiento:** lo limita el modelo SPA, que no muestra nada hasta ejecutar el JS (FCP ~3 s en la simulación de 4G). Prerenderizar el HTML en el build sería la mejora más grande.
-- **Peso:** el bundle inicial es de ~157 KB gz, repartido en partes casi iguales entre GSAP, React DOM y React Router. La escena 3D (~245 KB gz) carga aparte, después.
-- **CLS:** hay un desplazamiento mínimo (0,018) cuando la tipografía definitiva reemplaza a la provisoria en el Hero.
-- **Consola:** en desarrollo puede aparecer el aviso `THREE.Clock deprecated`. Viene de React Three Fiber, no del código del proyecto.
+- Both languages and all four featured case studies are implemented.
+- This is a client-rendered SPA; pre-rendering could improve first-load performance and indexing.
+- A manual review on a physical mobile device remains on the [content checklist](CONTENT_TODO.md).
+- The documentation describes the current repository state, not guaranteed uptime for third-party project demos.
